@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MeetingController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Auth\GoogleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -62,5 +63,13 @@ Route::middleware(['auth'])->group(function () {
     }
     })->name('test.n8n');
 });
+Route::get('/oauth/google', [GoogleController::class, 'redirect'])->name('oauth.google.redirect');
+Route::get('/oauth/google/callback', [GoogleController::class, 'callback'])->name('oauth.google.callback');
+Route::post('/oauth/google/store', [GoogleController::class, 'store'])->name('oauth.google.store');
+
+
+Route::get('/oauth/google/sheets', [GoogleController::class, 'listSheets'])->name('oauth.google.sheets');
+Route::post('/oauth/google/sheets/save', [GoogleController::class, 'saveSheet'])->name('oauth.google.sheets.save');
+
 
 require __DIR__.'/auth.php';

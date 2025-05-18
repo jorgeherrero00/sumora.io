@@ -16,6 +16,9 @@ public function store(Request $request)
         'archivo' => 'required|file|mimes:mp3,wav,m4a,mp4,mov,avi|max:20480',
     ]);
 
+    $guardarEnSheets = $request->input('enviar_google_sheets') == 1;
+
+
     $archivo = $request->file('archivo');
     $pathTemporal = $archivo->getPathname();
 
@@ -41,6 +44,7 @@ public function store(Request $request)
         'titulo' => $request->input('titulo'),
         'archivo' => $ruta,
         'formato_origen' => $tipo,
+        'guardar_en_google_sheets' => $guardarEnSheets,
     ]);
 
     ProcesarReunionSubida::dispatch($meeting);

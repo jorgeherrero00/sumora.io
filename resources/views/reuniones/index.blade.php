@@ -29,6 +29,7 @@
     @csrf
     <input type="text" name="titulo" placeholder="Título (opcional)">
     <input type="file" name="archivo" required accept=".mp4, .mov, .webm, .mp3, .wav, .ogg">
+    <input type="checkbox" name="enviar_google_sheets" value="1"> Guardar también en mi Google Sheets
     <button type="submit">Subir</button> 
 </form>
 

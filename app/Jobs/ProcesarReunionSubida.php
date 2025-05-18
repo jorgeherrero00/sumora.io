@@ -30,7 +30,6 @@ class ProcesarReunionSubida implements ShouldQueue
     public function handle()
 {
     Log::info('🎯 Entró al Job correctamente');
-    
 
     $pathOriginal = storage_path('app/public/' . $this->meeting->archivo);
     $nuevoPath = $pathOriginal;
@@ -76,7 +75,22 @@ $transcripcion = is_string($transcripcionRaw) ? $transcripcionRaw : (string) $tr
     // 3. RESUMEN
     $resumen = '';
     if ($transcripcion) {
-        $promptResumen = "Resume de forma clara y profesional esta reunión:\n\n" . $transcripcion;
+        $promptResumen = <<<TXT
+        Actúa como un asistente profesional y redacta un resumen ejecutivo de esta reunión.
+
+        Incluye:
+
+        1. Objetivo de la reunión.
+        2. Puntos clave tratados.
+        3. Decisiones tomadas.
+        4. Próximos pasos (si los hay).
+
+        Sé claro, profesional y directo. Redacta en un tono neutro y ordenado.
+
+        Texto de la reunión:
+        ---
+        $transcripcion
+        TXT;
         try {
     Log::info('🧾 Enviando a GPT para resumen');
     $respuestaResumen = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
@@ -102,15 +116,27 @@ $transcripcion = is_string($transcripcionRaw) ? $transcripcionRaw : (string) $tr
 
     // 4. TAREAS
     $tareasTexto = '';
-    $promptTareas = <<<TXT
-Extrae una lista clara y numerada de tareas o acciones pendientes de esta transcripción.
+$promptTareas = <<<TXT
+Extrae una lista clara y numerada de tareas pendientes encontradas en esta transcripción.
 
-- Usa formato: 1. Tarea 1...
-- Si no hay tareas, responde solo: "NINGUNA"
+Por cada tarea, indica:
+- Responsable (si aparece).
+- Acción concreta.
+- Fecha límite (si se menciona).
 
+Formato:
+1. [Responsable]: [Acción] (Fecha si la hay)
+
+Ejemplo:
+1. Marta: Redactar el copy de la landing page (antes del viernes)
+
+Si no hay tareas, responde sólo con: "NINGUNA"
+
+Texto de la reunión:
 ---
 $transcripcion
 TXT;
+
 
     Log::info('🗂 Enviando a GPT para tareas');
     $respuestaTareas = Http::withToken(config('services.openai.key'))->post('https://api.openai.com/v1/chat/completions', [
@@ -139,21 +165,38 @@ TXT;
     }
 
     // 5. Guardar resumen y transcripción
-/*     $this->meeting->update([
+    $this->meeting->update([
         'transcripcion' => $transcripcion,
         'resumen' => $resumen,
     ]);
-    Log::info('🗃 Reunión actualizada en DB'); */
+    Log::info('🗃 Reunión actualizada en DB');
 
     // 6. Enviar a N8N
     $payload = [
-        'reunion_id' => $this->meeting->id,
-        'titulo' => $this->meeting->titulo,
-        'resumen' => $this->meeting->resumen,
-        'tareas' => $this->meeting->tasks->pluck('descripcion')->toArray(),
-        'email_usuario' => $this->meeting->user->email,
-    ];
+    'reunion_id' => $this->meeting->id,
+    'titulo' => $this->meeting->titulo,
+    'resumen' => $this->meeting->resumen,
+    'tareas' => $this->meeting->tasks->pluck('descripcion')->toArray(),
+    'email_usuario' => $this->meeting->user->email,
+];
 
+if ($this->meeting->guardar_en_google_sheets) {
+    $integration = $this->meeting->user->integrations()->where('tipo', 'google_sheets')->first();
+    $config = json_decode($integration?->config ?? '{}', true);
+
+    if ($integration && isset($config['spreadsheet_id'])) {
+        $payload['google_sheets'] = [
+            'access_token' => $integration->token,
+            'spreadsheet_id' => $config['spreadsheet_id'],
+            'sheet_name' => $config['sheet_name'] ?? 'Hoja 1',
+            'contenido' => [
+                'titulo' => $this->meeting->titulo,
+                'resumen' => $this->meeting->resumen,
+                'tareas' => $this->meeting->tasks->pluck('descripcion')->toArray(),
+            ],
+        ];
+    }
+}
     Log::info('🚀 Enviando webhook a N8N', [
         'url' => env('N8N_WEBHOOK_URL'),
         'payload' => $payload,
