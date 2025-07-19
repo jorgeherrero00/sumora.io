@@ -16,8 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //
 
-        $middleware->alias('auth.api_token', AuthenticateWithApiToken::class);
-
+        $middleware->alias([
+            'auth.api_token' => AuthenticateWithApiToken::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
