@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+<nav x-data="{ open: false }" class="bg-white dark:bg-black border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -15,8 +15,11 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('reuniones.index')" :active="request()->routeIs('reuniones.index')">
-                        {{ __('Mis reuniones') }}
+                    <x-nav-link :href="route('reuniones.index')" :active="request()->routeIs('reuniones.index')" >
+                        {{ __('My Meetings') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('integrations.index')" :active="request()->routeIs('integrations.index')">
+                        {{ __('My Api Keys') }}
                     </x-nav-link>
                 </div>
             </div>

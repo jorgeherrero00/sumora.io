@@ -6,6 +6,7 @@ use App\Http\Controllers\MeetingController;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\IntegrationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,9 +26,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reuniones', [MeetingController::class, 'index'])->name('reuniones.index');
     Route::post('/reuniones', [MeetingController::class, 'store'])->name('reuniones.store');
     Route::get('/reuniones/{meeting}', [MeetingController::class, 'show'])->name('reuniones.show');
+    
 
 
-
+    // Integrations
+    Route::get('/integrations', [IntegrationController::class, 'index'])->name('integrations.index');
+    Route::post('/integrations', [IntegrationController::class, 'store'])->name('integrations.store');
 
     Route::get('/test-n8n', function () {
     $payload = [

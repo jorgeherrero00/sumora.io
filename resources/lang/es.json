@@ -1,0 +1,20 @@
+{
+    "Dashboard": "Panel de control",
+    "My Meetings": "Mis reuniones",
+    "My Api Keys": "Mis claves de API",
+    "Login": "Iniciar sesión",
+    "Register": "Registrarse",
+    "Logout": "Cerrar sesión",
+    "Forgot Password": "¿Olvidaste tu contraseña?",
+    "Reset Password": "Restablecer contraseña",
+    "Email": "Correo electrónico",
+    "Password": "Contraseña",
+    "Confirm Password": "Confirmar contraseña",
+    "Remember Me": "Recuérdame",
+    "Name": "Nombre",
+    "Create Account": "Crear cuenta",
+    "Send Password Reset Link": "Enviar enlace de restablecimiento de contraseña",
+    "Profile": "Perfil",
+    "Log Out": "Cerrar sesión",
+    "You're logged in!": "¡Has iniciado sesión!"
+}

@@ -116,26 +116,26 @@ $transcripcion = is_string($transcripcionRaw) ? $transcripcionRaw : (string) $tr
 
     // 4. TAREAS
     $tareasTexto = '';
-$promptTareas = <<<TXT
-Extrae una lista clara y numerada de tareas pendientes encontradas en esta transcripción.
+    $promptTareas = <<<TXT
+    Extrae una lista clara y numerada de tareas pendientes encontradas en esta transcripción.
 
-Por cada tarea, indica:
-- Responsable (si aparece).
-- Acción concreta.
-- Fecha límite (si se menciona).
+    Por cada tarea, indica:
+    - Responsable (si aparece).
+    - Acción concreta.
+    - Fecha límite (si se menciona).
 
-Formato:
-1. [Responsable]: [Acción] (Fecha si la hay)
+    Formato:
+    1. [Responsable]: [Acción] (Fecha si la hay)
 
-Ejemplo:
-1. Marta: Redactar el copy de la landing page (antes del viernes)
+    Ejemplo:
+    1. Marta: Redactar el copy de la landing page (antes del viernes)
 
-Si no hay tareas, responde sólo con: "NINGUNA"
+    Si no hay tareas, responde sólo con: "NINGUNA"
 
-Texto de la reunión:
----
-$transcripcion
-TXT;
+    Texto de la reunión:
+    ---
+    $transcripcion
+    TXT;
 
 
     Log::info('🗂 Enviando a GPT para tareas');
