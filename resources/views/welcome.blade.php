@@ -21,145 +21,736 @@
 
         <style>
         body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            background: radial-gradient(ellipse at top left, rgba(255,100,0,0.15), transparent),
-                        radial-gradient(ellipse at bottom right, rgba(255,100,0,0.15), transparent);
-            z-index: -1;
-        }
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at top left, rgba(0,0,0,0.6), transparent),
+                  linear-gradient(135deg, #110f17 0%, #0b0b0f 100%);
+      z-index: -1;
+    }
+    nav a.active {
+      color: #ff5e00;
+    }
+    .ribbon {
+      position: absolute;
+      top: -0.75rem;
+      right: -0.75rem;
+      background: linear-gradient(45deg, #ff7a00, #ff4500);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      border-radius: 0.25rem;
+      transform: rotate(15deg);
+    }
     </style>
     </head>
-<body class="bg-[#0f0f0f] text-white font-sans antialiased">
-    <!-- Hero -->
-     <header class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
-    <div class="text-xl font-bold text-orange-500">Sumora</div>
-    <nav class="hidden md:flex gap-8 text-gray-300">
-      <a href="#" class="hover:text-white">Inicio</a>
-      <a href="#" class="hover:text-white">Características</a>
-      <a href="#planes" class="hover:text-white">Planes</a>
-      <a href="#faq" class="hover:text-white">FAQ</a>
-    </nav>
-    <div class="flex gap-4">
-      <a href="#" class="text-sm text-gray-300 hover:text-white">Iniciar sesión</a>
-      <a href="#" class="text-sm bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-xl text-white font-semibold">Regístrate</a>
-    </div>
-  </header>
-
-
-  
-
-     <section class="text-center py-28 px-6 relative z-10">
-    <div class="inline-block bg-orange-600/20 text-orange-400 px-4 py-1 rounded-full text-sm mb-6">Resumen con IA</div>
-    <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">Convierte tus reuniones en tareas accionables</h1>
-    <p class="text-lg md:text-xl mb-10 max-w-2xl mx-auto text-gray-400">Sumora transcribe, resume y organiza tus reuniones automáticamente. Recíbelo por email, Slack o Notion.</p>
-    <div class="flex justify-center gap-4">
-      <a href="#planes" class="bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-xl font-semibold shadow-lg transition">Empieza gratis</a>
-      <a href="#demo" class="bg-white text-black py-3 px-6 rounded-xl font-semibold hover:bg-gray-200 transition">Ver demo</a>
-    </div>
-  </section>
-
-    <!-- Hero UI Preview -->
-  <section class="px-6 -mt-12">
-    <div class="max-w-6xl mx-auto bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700">
-      <div class="flex justify-between mb-4 text-sm text-gray-400">
-        <span class="font-semibold">Buenos días, Jorge</span>
-        <span>Reuniones procesadas: 3 / 5</span>
-      </div>
-      <div class="grid md:grid-cols-3 gap-6 text-white">
-        <div class="bg-gray-800 rounded-xl p-4">
-          <p class="text-sm text-gray-400 mb-1">Resumen generado</p>
-          <p class="text-lg font-bold">✅ 1.650 palabras</p>
-        </div>
-        <div class="bg-orange-500/20 rounded-xl p-4">
-          <p class="text-sm text-orange-300 mb-1">Tareas detectadas</p>
-          <p class="text-lg font-bold">📝 12 acciones clave</p>
-        </div>
-        <div class="bg-gray-800 rounded-xl p-4">
-          <p class="text-sm text-gray-400 mb-1">Entrega automatizada</p>
-          <p class="text-lg font-bold">📤 Notion + Email</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-    <!-- Integraciones -->
-    <section class="py-20 px-4 bg-gray-950">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-3xl font-bold mb-4">Integraciones que te <span class="text-orange-500">encantarán</span></h2>
-            <div class="flex flex-wrap justify-center gap-8 mt-10 opacity-90">
-                <img src="/logos/zoom.svg" class="h-10 grayscale" alt="Zoom">
-                <img src="/logos/google-meet.svg" class="h-10 grayscale" alt="Google Meet">
-                <img src="/logos/slack.svg" class="h-10 grayscale" alt="Slack">
-                <img src="/logos/notion.svg" class="h-10 grayscale" alt="Notion">
-                <img src="/logos/google-sheets.svg" class="h-10 grayscale" alt="Google Sheets">
+<body class="bg-[#0a0a0f] text-white font-sans antialiased">
+  <!-- Header -->
+<header class="backdrop-blur-xl bg-black/50 fixed w-full z-20 shadow-lg shadow-orange-500/10 border-b border-orange-500/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <!-- Logo with gradient effect -->
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full blur-md opacity-70 animate-pulse"></div>
+                <div class="relative text-2xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 text-transparent bg-clip-text">Sumora</div>
             </div>
         </div>
-    </section>
-
-    <!-- Cómo funciona -->
-    <section class="py-28 px-4 bg-gradient-to-b from-gray-900 to-black">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-12 text-center">
-            <div class="bg-gray-800 rounded-2xl p-8 shadow-lg">
-                <div class="text-4xl mb-4">1️⃣</div>
-                <h3 class="text-xl font-bold mb-2">Sube tu reunión</h3>
-                <p class="text-gray-300">Grabación de Zoom, Meet o vídeo/audio desde tu ordenador.</p>
-            </div>
-            <div class="bg-gray-800 rounded-2xl p-8 shadow-lg">
-                <div class="text-4xl mb-4">2️⃣</div>
-                <h3 class="text-xl font-bold mb-2">Resumen automático</h3>
-                <p class="text-gray-300">Transcripción + resumen con IA + lista de tareas clave.</p>
-            </div>
-            <div class="bg-gray-800 rounded-2xl p-8 shadow-lg">
-                <div class="text-4xl mb-4">3️⃣</div>
-                <h3 class="text-xl font-bold mb-2">Recíbelo donde quieras</h3>
-                <p class="text-gray-300">Email, Slack o guardado en Notion/Sheets con n8n.</p>
-            </div>
+        
+        <!-- Navigation with hover effects and indicator -->
+        <nav class="hidden md:flex gap-8 font-medium">
+            <a href="#" class="relative py-2 px-1 text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 active">Inicio</a>
+            <a href="#features" class="relative py-2 px-1 text-gray-300 hover:text-white transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 after:transition-all after:duration-300">Características</a>
+            <a href="#planes" class="relative py-2 px-1 text-gray-300 hover:text-white transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 after:transition-all after:duration-300">Planes</a>
+            <a href="#faq" class="relative py-2 px-1 text-gray-300 hover:text-white transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 after:transition-all after:duration-300">FAQ</a>
+        </nav>
+        
+        <!-- Auth buttons with hover effects -->
+        <div class="hidden md:flex gap-4 items-center">
+            <a href="/login" class="text-sm text-gray-300 hover:text-white transition-colors duration-300 px-4 py-2">
+                Iniciar sesión
+            </a>
+            <a href="/register" class="text-sm group relative px-5 py-2.5 overflow-hidden rounded-lg bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5">
+                <span class="relative z-10 font-medium">Regístrate</span>
+                <span class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            </a>
         </div>
-    </section>
-
-    <!-- Planes -->
-    <section id="planes" class="py-28 px-4 bg-gray-950">
-        <div class="max-w-6xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-12">Elige tu plan</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="bg-gray-800 p-8 rounded-2xl border border-gray-700">
-                    <h3 class="text-2xl font-semibold mb-2">Free</h3>
-                    <p class="text-3xl font-bold mb-6">0€/mes</p>
-                    <ul class="mb-6 text-left text-gray-300">
-                        <li>✅ 1 reunión/mes</li>
-                        <li>✅ Resumen + tareas</li>
-                        <li>❌ Integraciones</li>
-                    </ul>
-                    <a href="#" class="block mt-4 bg-orange-500 py-3 rounded-xl font-semibold">Empieza ya</a>
-                </div>
-                <div class="bg-orange-600 p-8 rounded-2xl text-black shadow-2xl border-2 border-orange-400">
-                    <h3 class="text-2xl font-semibold mb-2">Starter</h3>
-                    <p class="text-3xl font-bold mb-6">9€/mes</p>
-                    <ul class="mb-6 text-left">
-                        <li>✅ 5 reuniones/mes</li>
-                        <li>✅ Todo el resumen IA</li>
-                        <li>❌ Integraciones externas</li>
-                    </ul>
-                    <a href="#" class="block mt-4 bg-white text-black py-3 rounded-xl font-semibold">Me interesa</a>
-                </div>
-                <div class="bg-gray-800 p-8 rounded-2xl border border-gray-700">
-                    <h3 class="text-2xl font-semibold mb-2">Pro</h3>
-                    <p class="text-3xl font-bold mb-6">29€/mes</p>
-                    <ul class="mb-6 text-left text-gray-300">
-                        <li>✅ 20 reuniones/mes</li>
-                        <li>✅ Resumen + tareas</li>
-                        <li>✅ Slack, Notion, Sheets</li>
-                    </ul>
-                    <a href="#" class="block mt-4 bg-orange-500 py-3 rounded-xl font-semibold">Contratar</a>
+        
+        <!-- Mobile menu button with animation -->
+        <button class="md:hidden relative group">
+            <div class="relative flex overflow-hidden items-center justify-center w-10 h-10">
+                <div class="flex flex-col justify-between w-6 h-5 transform transition-all duration-300 origin-center group-hover:scale-110">
+                    <div class="bg-white h-0.5 w-6 rounded transform transition-all duration-300 origin-left group-hover:bg-orange-400"></div>
+                    <div class="bg-white h-0.5 w-6 rounded transform transition-all duration-300 group-hover:bg-orange-400"></div>
+                    <div class="bg-white h-0.5 w-6 rounded transform transition-all duration-300 origin-left group-hover:bg-orange-400"></div>
                 </div>
             </div>
-        </div>
-    </section>
+        </button>
+    </div>
+    
+    <!-- Mobile menu (hidden by default) -->
+    <div class="md:hidden hidden bg-black/90 backdrop-blur-xl border-t border-gray-800">
+        <nav class="flex flex-col py-6 px-6 space-y-4">
+            <a href="#" class="py-2 text-white font-medium border-l-2 border-orange-500 pl-4">Inicio</a>
+            <a href="#features" class="py-2 text-gray-300 hover:text-white hover:border-l-2 hover:border-orange-500 hover:pl-4 transition-all duration-300">Características</a>
+            <a href="#planes" class="py-2 text-gray-300 hover:text-white hover:border-l-2 hover:border-orange-500 hover:pl-4 transition-all duration-300">Planes</a>
+            <a href="#faq" class="py-2 text-gray-300 hover:text-white hover:border-l-2 hover:border-orange-500 hover:pl-4 transition-all duration-300">FAQ</a>
+            <div class="pt-4 flex flex-col space-y-3">
+                <a href="/login" class="text-center py-2 text-gray-300 hover:text-white border border-gray-700 rounded-lg hover:border-gray-500 transition-colors duration-300">Iniciar sesión</a>
+                <a href="/register" class="text-center py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium">Regístrate</a>
+            </div>
+        </nav>
+    </div>
+</header>
 
-    <!-- Footer -->
-    <footer class="py-12 px-4 text-center text-gray-500 text-sm">
-        <p>&copy; 2025 Sumora.io — Todos los derechos reservados</p>
-    </footer>
+  <!-- Hero -->
+<section class="relative min-h-screen flex flex-col justify-center pt-24 pb-20 px-6 overflow-hidden">
+    <!-- Background effects -->
+    <div class="absolute inset-0 z-0">
+        <div class="absolute top-1/4 left-1/5 w-96 h-96 bg-orange-500/20 rounded-full filter blur-[80px] animate-pulse"></div>
+        <div class="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-600/20 rounded-full filter blur-[100px] animate-pulse" style="animation-delay: 1s;"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative z-10 text-center max-w-5xl mx-auto">
+        <div class="inline-flex items-center bg-gradient-to-r from-orange-500/30 to-red-500/30 px-4 py-2 rounded-full backdrop-blur-sm mb-6 border border-orange-500/20 shadow-lg">
+            <span class="animate-pulse mr-2 h-2 w-2 bg-orange-500 rounded-full"></span>
+            <span class="text-orange-300 font-medium tracking-wider text-sm">IMPULSADO POR INTELIGENCIA ARTIFICIAL</span>
+        </div>
+        
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-8 leading-tight bg-gradient-to-br from-white via-gray-100 to-gray-300 text-transparent bg-clip-text">
+            Transforma tus reuniones en <span class="bg-gradient-to-r from-orange-400 to-red-500 text-transparent bg-clip-text">acciones concretas</span>
+        </h1>
+        
+        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
+            Sumora analiza tus conversaciones, genera resúmenes inteligentes y extrae las acciones clave para maximizar tu productividad.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
+            <a href="#planes" class="group relative overflow-hidden px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 font-bold text-lg shadow-xl shadow-orange-500/20 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-orange-500/30">
+                <span class="relative z-10">Prueba gratis 14 días</span>
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+            </a>
+            <a href="#demo" class="group relative px-8 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 font-bold text-lg transition-all duration-300 hover:bg-white/20 hover:-translate-y-1">
+                <span class="flex items-center">
+                    Ver demostración
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                </span>
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="flex flex-wrap justify-center gap-10 text-center mb-16">
+            <div class="backdrop-blur-md bg-white/5 px-6 py-4 rounded-xl border border-white/10">
+                <span class="block text-3xl font-bold text-orange-400 mb-1">4,800+</span>
+                <span class="text-gray-400">Usuarios activos</span>
+            </div>
+            <div class="backdrop-blur-md bg-white/5 px-6 py-4 rounded-xl border border-white/10">
+                <span class="block text-3xl font-bold text-orange-400 mb-1">32K+</span>
+                <span class="text-gray-400">Reuniones analizadas</span>
+            </div>
+            <div class="backdrop-blur-md bg-white/5 px-6 py-4 rounded-xl border border-white/10">
+                <span class="block text-3xl font-bold text-orange-400 mb-1">98%</span>
+                <span class="text-gray-400">Satisfacción</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- UI Preview with floating elements -->
+<section class="relative px-6 -mt-16 z-20 mb-32">
+    <div class="max-w-6xl mx-auto relative">
+        <!-- Main app interface preview -->
+        <div class="rounded-3xl shadow-2xl border border-gray-700/50 overflow-hidden bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-xl transform transition-transform hover:scale-[1.01] duration-500">
+            <img src="/img/ui-preview.png" alt="Vista previa de la interfaz" class="w-full object-cover" onerror="this.src='https://placehold.co/1200x600/1f1f23/orange?text=Sumora+Interface'">
+        </div>
+        
+        <!-- Floating elements -->
+        <div class="absolute -top-10 -left-10 md:left-10 transform rotate-[-6deg] bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 w-64 hidden md:block">
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">AI</div>
+                <div class="flex-1">
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-3/4 mb-2"></div>
+                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-1/2"></div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-full mb-2"></div>
+                <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-5/6"></div>
+            </div>
+            <div class="ribbon">AI generado</div>
+        </div>
+        
+        <div class="absolute -bottom-8 right-10 transform rotate-[3deg] bg-orange-500 rounded-lg shadow-xl p-3 w-48 hidden md:block">
+            <div class="flex items-center gap-2 text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span class="text-sm font-medium">Tarea completada</span>
+            </div>
+            <div class="mt-1">
+                <div class="h-2 bg-white/30 rounded-full w-full"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+  <!-- Features -->
+<section id="features" class="py-32 px-6 bg-gradient-to-b from-black/40 to-transparent relative">
+    <div class="max-w-6xl mx-auto mb-16 text-center">
+        <div class="inline-block bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full uppercase text-xs tracking-wider mb-6">Características</div>
+        <h2 class="text-4xl md:text-5xl font-bold mb-6">Todo lo que necesitas para <span class="text-orange-500">optimizar tus reuniones</span></h2>
+        <p class="text-gray-400 max-w-2xl mx-auto">Nuestras herramientas avanzadas transforman horas de conversación en acciones claras y concisas.</p>
+    </div>
+    
+    <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 lg:gap-12">
+        <!-- Feature 1 -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 transform transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl hover:shadow-orange-500/10">
+            <div class="bg-gradient-to-br from-orange-500 to-red-600 p-4 rounded-2xl inline-block mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Resumen automático</h3>
+            <p class="text-gray-400 mb-6">Transforma reuniones extensas en resúmenes concisos con puntos clave identificados por IA avanzada.</p>
+            <ul class="text-sm text-gray-300 space-y-2">
+                <li class="flex items-start">
+                    <span class="text-orange-500 mr-2">✓</span>
+                    Detección de temas principales
+                </li>
+                <li class="flex items-start">
+                    <span class="text-orange-500 mr-2">✓</span>
+                    Organización jerárquica
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Feature 2 -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 transform transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl hover:shadow-orange-500/10">
+            <div class="bg-gradient-to-br from-orange-500 to-red-600 p-4 rounded-2xl inline-block mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Tareas destacadas</h3>
+            <p class="text-gray-400 mb-6">Extracción inteligente de acciones con asignación automática y fechas límite sugeridas.</p>
+            <ul class="text-sm text-gray-300 space-y-2">
+                <li class="flex items-start">
+                    <span class="text-orange-500 mr-2">✓</span>
+                    Identificación de responsables
+                </li>
+                <li class="flex items-start">
+                    <span class="text-orange-500 mr-2">✓</span>
+                    Priorización automática
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Feature 3 -->
+        <div class="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700/50 transform transition-all duration-300 hover:translate-y-[-8px] hover:shadow-xl hover:shadow-orange-500/10">
+            <div class="bg-gradient-to-br from-orange-500 to-red-600 p-4 rounded-2xl inline-block mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+            </div>
+            <h3 class="text-2xl font-bold mb-4">Integraciones avanzadas</h3>
+            <p class="text-gray-400 mb-6">Conecta con tus herramientas favoritas para una gestión de tareas sin fricciones.</p>
+            <ul class="text-sm text-gray-300 space-y-2">
+                <li class="flex items-start">
+                    <span class="text-orange-500 mr-2">✓</span>
+                    Slack, Email, Notion
+                </li>
+                <li class="flex items-start">
+                    <span class="text-orange-500 mr-2">✓</span>
+                    Calendar y recordatorios
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Extra feature highlight -->
+    <div class="max-w-6xl mx-auto mt-20 bg-gradient-to-r from-orange-600/30 to-red-600/30 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-10">
+        <div class="md:w-1/2">
+            <div class="inline-block bg-orange-500 text-white px-3 py-1 rounded-full text-xs uppercase tracking-wider mb-4">Exclusivo</div>
+            <h3 class="text-3xl font-bold mb-4">Análisis de sentimiento</h3>
+            <p class="text-gray-300 mb-6">Nuestra IA detecta el tono emocional de las conversaciones, destacando posibles conflictos o puntos de acuerdo.</p>
+            <a href="#demo" class="inline-flex items-center text-orange-400 hover:text-orange-300 font-semibold">
+                Descubre cómo funciona
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+        <div class="md:w-1/2">
+            <img src="/img/sentiment-analysis.png" alt="Análisis de sentimiento" class="rounded-xl shadow-lg w-full" onerror="this.src='https://placehold.co/600x400/orange/white?text=Análisis+de+Sentimiento'">
+        </div>
+    </div>
+</section>
+
+  <!-- Plans -->
+<section id="planes" class="py-32 px-6 bg-gradient-to-b from-black/60 to-gray-900/80 relative">
+    <!-- Background decoration elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+        <div class="absolute -top-24 -left-24 w-64 h-64 bg-orange-500/20 rounded-full filter blur-3xl"></div>
+        <div class="absolute top-1/2 -right-32 w-80 h-80 bg-orange-600/10 rounded-full filter blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-6xl mx-auto relative z-10">
+        <div class="text-center mb-16">
+            <div class="inline-block bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full uppercase text-xs tracking-wider mb-4">Flexibilidad</div>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Elige el plan <span class="text-gradient bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">perfecto para ti</span></h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">Selecciona el plan que mejor se adapte a tus necesidades, sin compromisos a largo plazo.</p>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-8 lg:gap-6">
+            <!-- Free Plan -->
+            <div class="group relative bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden transition-all duration-300 hover:border-orange-500/30 hover:shadow-xl hover:shadow-orange-500/10 hover:translate-y-[-8px]">
+                <div class="absolute inset-0 bg-gradient-to-b from-gray-800/80 to-gray-900/80 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="relative z-10 p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Free</h3>
+                            <p class="text-gray-400 text-sm mt-1">Para empezar a explorar</p>
+                        </div>
+                        <div class="bg-gray-700/50 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <span class="text-5xl font-extrabold text-white">0€</span>
+                        <span class="text-gray-400 ml-2">/mes</span>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>1 reunión/mes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Resumen + tareas</span>
+                        </li>
+                        <li class="flex items-start text-gray-500">
+                            <span class="text-red-400 mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Integraciones</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="block w-full py-3 px-6 text-center bg-gray-700 hover:bg-orange-500 text-white font-semibold rounded-lg transition-colors duration-300">Comenzar gratis</a>
+                </div>
+            </div>
+            
+            <!-- Starter Plan (Featured) -->
+            <div class="group relative bg-gradient-to-br from-orange-600/90 to-red-600/90 rounded-2xl overflow-hidden transform scale-105 shadow-[0_8px_30px_rgb(255,79,0,0.2)] z-10">
+                <div class="absolute top-0 right-0 bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold py-1 px-4 text-xs uppercase tracking-wider transform rotate-[30deg] translate-x-[30%] translate-y-[90%]">
+                    Popular
+                </div>
+                <div class="h-1.5 w-full bg-gradient-to-r from-yellow-300 to-orange-400"></div>
+                <div class="relative z-10 p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Starter</h3>
+                            <p class="text-orange-100 text-sm mt-1">Ideal para profesionales</p>
+                        </div>
+                        <div class="bg-white/20 p-2 rounded-lg backdrop-blur-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <span class="text-5xl font-extrabold text-white">9€</span>
+                        <span class="text-orange-100 ml-2">/mes</span>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8 text-white">
+                        <li class="flex items-start">
+                            <span class="text-white mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>5 reuniones/mes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-white mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Resumen + tareas</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-white mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Integraciones básicas</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="block w-full py-3 px-6 text-center bg-white text-orange-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors duration-300 shadow-lg shadow-orange-600/20">Comenzar ahora</a>
+                </div>
+            </div>
+            
+            <!-- Pro Plan -->
+            <div class="group relative bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden transition-all duration-300 hover:border-orange-500/30 hover:shadow-xl hover:shadow-orange-500/10 hover:translate-y-[-8px]">
+                <div class="absolute inset-0 bg-gradient-to-b from-gray-800/80 to-gray-900/80 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <div class="relative z-10 p-8">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Pro</h3>
+                            <p class="text-gray-400 text-sm mt-1">Para equipos y empresas</p>
+                        </div>
+                        <div class="bg-gray-700/50 p-2 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-8">
+                        <span class="text-5xl font-extrabold text-white">29€</span>
+                        <span class="text-gray-400 ml-2">/mes</span>
+                    </div>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>20 reuniones/mes</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Integraciones Slack, Notion, Sheets</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Prioridad soporte</span>
+                        </li>
+                    </ul>
+                    
+                    <a href="#" class="block w-full py-3 px-6 text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-300 shadow-lg shadow-orange-600/20">Actualizar a Pro</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enterprise callout -->
+        <div class="mt-16 bg-gradient-to-r from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 md:gap-16">
+            <div class="md:w-2/3">
+                <h3 class="text-2xl font-bold mb-3">¿Necesitas un plan personalizado?</h3>
+                <p class="text-gray-400 mb-4">Contacta con nosotros para un plan Enterprise con características a medida para tu organización.</p>
+                <ul class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-gray-300">
+                    <li class="flex items-center">
+                        <span class="text-orange-400 mr-2">✓</span> Reuniones ilimitadas
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-orange-400 mr-2">✓</span> API dedicada
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-orange-400 mr-2">✓</span> SSO & Administración
+                    </li>
+                    <li class="flex items-center">
+                        <span class="text-orange-400 mr-2">✓</span> Soporte 24/7
+                    </li>
+                </ul>
+            </div>
+            <div class="md:w-1/3 flex justify-center">
+                <a href="#contact" class="inline-flex items-center py-3 px-6 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium transition-colors border border-white/20 backdrop-blur-sm">
+                    <span>Contáctanos</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <style>
+        .text-gradient {
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+    </style>
+</section>
+
+  <!-- CTA Bottom -->
+<!-- CTA Bottom -->
+<section class="py-20 px-6 relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-red-700/10 z-0"></div>
+    <div class="absolute -top-40 -left-40 w-80 h-80 bg-orange-500/10 rounded-full filter blur-3xl"></div>
+    <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-red-500/10 rounded-full filter blur-3xl"></div>
+    
+    <!-- Main content -->
+    <div class="max-w-4xl mx-auto bg-gradient-to-r from-gray-900/80 to-gray-800/80 p-10 md:p-16 rounded-3xl border border-gray-700/50 backdrop-blur-sm shadow-2xl relative z-10 transform transition-transform hover:scale-[1.01] duration-500">
+        <div class="absolute -top-6 left-1/2 transform -translate-x-1/2">
+            <div class="px-6 py-2 bg-gradient-to-r from-orange-500 to-red-500 rounded-full shadow-lg shadow-orange-500/20">
+                <span class="text-white font-bold text-sm uppercase tracking-wider">Prueba gratuita de 14 días</span>
+            </div>
+        </div>
+        
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Transforma tus reuniones hoy</h2>
+        <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">Únete a miles de profesionales que ahorran tiempo y aumentan su productividad con Sumora.</p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="#signup" class="relative overflow-hidden group px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-lg shadow-xl shadow-orange-500/20 transform transition-all duration-300 hover:-translate-y-1">
+                <span class="relative z-10">Empieza gratis</span>
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+            </a>
+            <a href="#demo" class="px-8 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white font-bold text-lg transition-all duration-300 hover:bg-white/20">
+                Ver demostración
+            </a>
+        </div>
+        
+        <div class="mt-10 flex flex-wrap justify-center gap-6 text-sm text-gray-400">
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Sin tarjeta de crédito</span>
+            </div>
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Cancelación en cualquier momento</span>
+            </div>
+            <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                </svg>
+                <span>Soporte técnico 24/7</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+ <!-- FAQ -->
+<section id="faq" class="py-32 px-6 bg-gradient-to-b from-gray-900 to-black relative overflow-hidden">
+    <!-- Decorative elements -->
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(249,115,22,0.15),transparent_40%),radial-gradient(circle_at_70%_60%,rgba(249,115,22,0.1),transparent_40%)]"></div>
+    <div class="absolute -top-40 -right-40 w-96 h-96 bg-orange-500/5 rounded-full filter blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-orange-600/5 rounded-full filter blur-3xl"></div>
+    
+    <div class="max-w-4xl mx-auto relative z-10">
+        <div class="text-center mb-16">
+            <div class="inline-block bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full uppercase text-xs tracking-wider mb-4">Dudas</div>
+            <h2 class="text-4xl md:text-5xl font-bold mb-6">Preguntas <span class="bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">frecuentes</span></h2>
+            <p class="text-gray-400 max-w-2xl mx-auto">Todo lo que necesitas saber sobre cómo Sumora puede transformar tus reuniones</p>
+        </div>
+        
+        <div class="space-y-5">
+            <!-- FAQ Item 1 -->
+            <div class="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden hover:border-orange-500/30 transition-all duration-300">
+                <button class="w-full flex justify-between items-center p-6 text-left focus:outline-none" onclick="
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.faq-icon');
+                    content.classList.toggle('max-h-0');
+                    content.classList.toggle('max-h-96');
+                    content.classList.toggle('py-0');
+                    content.classList.toggle('py-6');
+                    icon.classList.toggle('rotate-45');
+                ">
+                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Cómo empiezo a usar Sumora?</span>
+                    <span class="text-orange-500 h-6 w-6 flex items-center justify-center transition-transform duration-300 faq-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </span>
+                </button>
+                <div class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out border-t border-gray-700/50 px-6 py-0">
+                    <p class="text-gray-300">
+                        Es muy sencillo: regístrate en nuestra plataforma, sube tu primera grabación de reunión (audio o video) y en menos de 5 minutos recibirás un resumen detallado con todas las tareas extraídas y organizadas por prioridad. También puedes programar integraciones para automatizar todo el proceso.
+                    </p>
+                    <div class="mt-4 flex gap-2">
+                        <a href="/register" class="text-orange-400 hover:text-orange-300 text-sm flex items-center">
+                            <span>Crear cuenta</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                        <a href="#demo" class="text-gray-400 hover:text-gray-300 text-sm flex items-center">
+                            <span>Ver demo</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 2 -->
+            <div class="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden hover:border-orange-500/30 transition-all duration-300">
+                <button class="w-full flex justify-between items-center p-6 text-left focus:outline-none" onclick="
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.faq-icon');
+                    content.classList.toggle('max-h-0');
+                    content.classList.toggle('max-h-96');
+                    content.classList.toggle('py-0');
+                    content.classList.toggle('py-6');
+                    icon.classList.toggle('rotate-45');
+                ">
+                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Puedo cambiar de plan en cualquier momento?</span>
+                    <span class="text-orange-500 h-6 w-6 flex items-center justify-center transition-transform duration-300 faq-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </span>
+                </button>
+                <div class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out border-t border-gray-700/50 px-6 py-0">
+                    <p class="text-gray-300">
+                        Absolutamente. Puedes actualizar o degradar tu suscripción en cualquier momento desde la sección de configuración de tu cuenta. Los cambios se aplicarán inmediatamente y los cargos se ajustarán de forma prorrateada. No hay compromisos a largo plazo ni penalizaciones por cambiar de plan.
+                    </p>
+                    <div class="mt-4 grid grid-cols-3 gap-4">
+                        <div class="bg-gray-700/50 rounded-lg p-3 text-center">
+                            <div class="text-orange-400 text-lg font-bold">Free</div>
+                            <div class="text-gray-400 text-xs">1 reunión/mes</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg p-3 text-center">
+                            <div class="text-orange-400 text-lg font-bold">Starter</div>
+                            <div class="text-gray-400 text-xs">5 reuniones/mes</div>
+                        </div>
+                        <div class="bg-gray-700/50 rounded-lg p-3 text-center">
+                            <div class="text-orange-400 text-lg font-bold">Pro</div>
+                            <div class="text-gray-400 text-xs">20 reuniones/mes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 3 -->
+            <div class="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden hover:border-orange-500/30 transition-all duration-300">
+                <button class="w-full flex justify-between items-center p-6 text-left focus:outline-none" onclick="
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.faq-icon');
+                    content.classList.toggle('max-h-0');
+                    content.classList.toggle('max-h-96');
+                    content.classList.toggle('py-0');
+                    content.classList.toggle('py-6');
+                    icon.classList.toggle('rotate-45');
+                ">
+                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Dónde recibo los resúmenes?</span>
+                    <span class="text-orange-500 h-6 w-6 flex items-center justify-center transition-transform duration-300 faq-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </span>
+                </button>
+                <div class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out border-t border-gray-700/50 px-6 py-0">
+                    <p class="text-gray-300">
+                        Sumora ofrece múltiples opciones para recibir tus resúmenes, según tus preferencias:
+                    </p>
+                    <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div class="flex items-center gap-2 bg-gray-700/30 rounded-lg p-3">
+                            <svg class="h-5 w-5 text-orange-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            <span class="text-gray-300 text-sm">Email</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-gray-700/30 rounded-lg p-3">
+                            <svg class="h-5 w-5 text-orange-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-300 text-sm">Slack</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-gray-700/30 rounded-lg p-3">
+                            <svg class="h-5 w-5 text-orange-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-300 text-sm">Notion</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-gray-700/30 rounded-lg p-3">
+                            <svg class="h-5 w-5 text-orange-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5 4a3 3 0 00-3 3v6a3 3 0 003 3h10a3 3 0 003-3V7a3 3 0 00-3-3H5zm-1 9v-1h5v2H5a1 1 0 01-1-1zm7 1h4a1 1 0 001-1v-1h-5v2zm0-4h5V8h-5v2zM9 8H4v2h5V8z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-gray-300 text-sm">Sheets</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- FAQ Item 4 (New) -->
+            <div class="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl overflow-hidden hover:border-orange-500/30 transition-all duration-300">
+                <button class="w-full flex justify-between items-center p-6 text-left focus:outline-none" onclick="
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.faq-icon');
+                    content.classList.toggle('max-h-0');
+                    content.classList.toggle('max-h-96');
+                    content.classList.toggle('py-0');
+                    content.classList.toggle('py-6');
+                    icon.classList.toggle('rotate-45');
+                ">
+                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Qué idiomas soporta Sumora?</span>
+                    <span class="text-orange-500 h-6 w-6 flex items-center justify-center transition-transform duration-300 faq-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </span>
+                </button>
+                <div class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out border-t border-gray-700/50 px-6 py-0">
+                    <p class="text-gray-300">
+                        Actualmente Sumora soporta español, inglés, francés, alemán, italiano y portugués. Estamos trabajando continuamente para añadir más idiomas a nuestra plataforma.
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-gray-300">Español</span>
+                        <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-gray-300">English</span>
+                        <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-gray-300">Français</span>
+                        <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-gray-300">Deutsch</span>
+                        <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-gray-300">Italiano</span>
+                        <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-gray-300">Português</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- More questions prompt -->
+        <div class="mt-12 text-center">
+            <p class="text-gray-400 mb-4">¿No encuentras lo que buscas?</p>
+            <a href="#contact" class="inline-flex items-center px-6 py-3 bg-gray-800/70 hover:bg-gray-700/70 border border-gray-700/50 rounded-lg text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                </svg>
+                Contacta con nosotros
+            </a>
+        </div>
+    </div>
+</section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-6 text-center text-gray-500 text-sm border-t border-gray-800">
+    <p>&copy; 2025 Sumora.io — Todos los derechos reservados</p>
+  </footer>
 </body>
 </html>
