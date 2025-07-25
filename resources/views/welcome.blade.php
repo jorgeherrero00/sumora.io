@@ -43,6 +43,40 @@
       border-radius: 0.25rem;
       transform: rotate(15deg);
     }
+
+    .nav-link {
+    position: relative;
+    padding: 0.5rem 0.25rem;
+    color: rgb(209 213 219); /* text-gray-300 */
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background: linear-gradient(to right, rgb(251 146 60), rgb(239 68 68));
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.nav-link.active {
+    color: white;
+}
+
+.nav-link.active::after {
+    width: 100%;
+}
     </style>
     </head>
 <body class="bg-[#0a0a0f] text-white font-sans antialiased">
@@ -59,10 +93,10 @@
         
         <!-- Navigation with hover effects and indicator -->
         <nav class="hidden md:flex gap-8 font-medium">
-            <a href="#" class="relative py-2 px-1 text-white after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 active">Inicio</a>
-            <a href="#features" class="relative py-2 px-1 text-gray-300 hover:text-white transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 after:transition-all after:duration-300">Características</a>
-            <a href="#planes" class="relative py-2 px-1 text-gray-300 hover:text-white transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 after:transition-all after:duration-300">Planes</a>
-            <a href="#faq" class="relative py-2 px-1 text-gray-300 hover:text-white transition-colors duration-300 after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-0 hover:after:w-full after:bg-gradient-to-r after:from-orange-400 after:to-red-500 after:transition-all after:duration-300">FAQ</a>
+            <a href="#" class="relative nav-link py-2 px-1 active">Inicio</a>
+            <a href="#features" class="relative py-2 px-1 nav-link">Características</a>
+            <a href="#planes" class="relative py-2 px-1 nav-link">Planes</a>
+            <a href="#faq" class="relative py-2 px-1 nav-link">FAQ</a>
         </nav>
         
         <!-- Auth buttons with hover effects -->
@@ -91,10 +125,10 @@
     <!-- Mobile menu (hidden by default) -->
     <div class="md:hidden hidden bg-black/90 backdrop-blur-xl border-t border-gray-800">
         <nav class="flex flex-col py-6 px-6 space-y-4">
-            <a href="#" class="py-2 text-white font-medium border-l-2 border-orange-500 pl-4">Inicio</a>
-            <a href="#features" class="py-2 text-gray-300 hover:text-white hover:border-l-2 hover:border-orange-500 hover:pl-4 transition-all duration-300">Características</a>
-            <a href="#planes" class="py-2 text-gray-300 hover:text-white hover:border-l-2 hover:border-orange-500 hover:pl-4 transition-all duration-300">Planes</a>
-            <a href="#faq" class="py-2 text-gray-300 hover:text-white hover:border-l-2 hover:border-orange-500 hover:pl-4 transition-all duration-300">FAQ</a>
+            <a href="#" class="py-2 nav-link pl-4">Inicio</a>
+            <a href="#features" class="py-2 nav-link">Características</a>
+            <a href="#planes" class="py-2 nav-link">Planes</a>
+            <a href="#faq" class="py-2 nav-link">FAQ</a>
             <div class="pt-4 flex flex-col space-y-3">
                 <a href="/login" class="text-center py-2 text-gray-300 hover:text-white border border-gray-700 rounded-lg hover:border-gray-500 transition-colors duration-300">Iniciar sesión</a>
                 <a href="/register" class="text-center py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium">Regístrate</a>
@@ -753,4 +787,24 @@
     <p>&copy; 2025 Sumora.io — Todos los derechos reservados</p>
   </footer>
 </body>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            // Remover clase active de todos los enlaces
+            navLinks.forEach(navLink => {
+                navLink.classList.remove('active');
+            });
+            
+            // Agregar clase active al enlace clickeado
+            this.classList.add('active');
+        });
+    });
+});
+</script>
+
 </html>

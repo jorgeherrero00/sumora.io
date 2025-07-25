@@ -13,7 +13,7 @@ public function store(Request $request)
 {
     $request->validate([
         'titulo' => 'nullable|string|max:255',
-        'archivo' => 'required|file|mimes:mp3,wav,m4a,mp4,mov,avi|max:20480',
+        'archivo' => 'required|file|mimes:mp3,wav,m4a,mp4,mov,avi|max:102400',
     ]);
 
     $guardarEnSheets = $request->input('enviar_google_sheets') == 1;
@@ -48,6 +48,15 @@ public function store(Request $request)
     ]);
 
     ProcesarReunionSubida::dispatch($meeting);
+
+if ($request->expectsJson() || $request->ajax()) {
+        return response()->json([
+            'success' => true,
+            'message' => 'Reunión subida correctamente',
+            'meeting_id' => $meeting->id,
+            'redirect' => route('reuniones.index')
+        ]);
+    }
 
     return redirect()->route('reuniones.index')->with('success', 'Reunión subida correctamente.');
 }
