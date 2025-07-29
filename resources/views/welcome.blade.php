@@ -9,6 +9,7 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+        <link rel="icon" href="{{ asset('logos/logo.png') }}" type="image/png">
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -83,13 +84,10 @@
   <!-- Header -->
 <header class="backdrop-blur-xl bg-black/50 fixed w-full z-20 shadow-lg shadow-orange-500/10 border-b border-orange-500/10">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <!-- Logo with gradient effect -->
-        <div class="flex items-center space-x-2">
-            <div class="relative">
-                <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full blur-md opacity-70 animate-pulse"></div>
-                <div class="relative text-2xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 text-transparent bg-clip-text">Sumora</div>
-            </div>
+        <div class="flex items-center">
+            <img src="{{ asset('logos/logo.png') }}" alt="Logo" class="h-10 w-10 rounded">
         </div>
+        <!-- Logo with gradient effect -->
         
         <!-- Navigation with hover effects and indicator -->
         <nav class="hidden md:flex gap-8 font-medium">
