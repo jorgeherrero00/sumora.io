@@ -3,6 +3,9 @@
 namespace App\Jobs;
 
 use App\Models\Meeting;
+use App\Services\NotionService;
+use App\Services\SlackService;
+use App\Services\GoogleSheetsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -12,7 +15,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-
 use FFMpeg;
 
 class ProcesarReunionSubida implements ShouldQueue
@@ -20,7 +22,6 @@ class ProcesarReunionSubida implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $meeting;
-    public $timeout = 600; // 10 minutos
 
     public function __construct(Meeting $meeting)
     {
@@ -29,245 +30,369 @@ class ProcesarReunionSubida implements ShouldQueue
 
     public function handle()
     {
-        Log::info('🎯 Entró al Job correctamente', ['meeting_id' => $this->meeting->id]);
+        Log::info('🎯 Iniciando procesamiento de reunión', ['meeting_id' => $this->meeting->id]);
 
+        try {
+            // 1. Procesar archivo (video → audio si es necesario)
+            $audioPath = $this->procesarArchivo();
+            
+            // 2. Transcribir con Whisper
+            $transcripcion = $this->transcribirAudio($audioPath);
+            
+            // 3. Generar resumen y tareas con GPT
+            $resultado = $this->generarResumenYTareas($transcripcion);
+            
+            // 4. Guardar en base de datos
+            $this->guardarResultados($transcripcion, $resultado);
+            
+            // 5. Enviar a integraciones
+            $this->enviarAIntegraciones($resultado);
+            
+            // 6. Notificar vía webhook/email
+            $this->enviarNotificaciones($resultado);
+
+            Log::info('✅ Reunión procesada exitosamente', ['meeting_id' => $this->meeting->id]);
+
+        } catch (\Exception $e) {
+            Log::error('❌ Error procesando reunión', [
+                'meeting_id' => $this->meeting->id,
+                'error' => $e->getMessage(),
+                'line' => $e->getLine()
+            ]);
+            throw $e;
+        }
+    }
+
+    private function procesarArchivo()
+    {
         $pathOriginal = storage_path('app/public/' . $this->meeting->archivo);
-        $nuevoPath = $pathOriginal;
-
-        // 1. Si es video → extraer audio
+        
         if ($this->meeting->formato_origen === 'video') {
-            Log::info('🎬 Es un vídeo, extrayendo audio');
+            Log::info('🎬 Convirtiendo video a audio');
+            
             $nombreBase = pathinfo($this->meeting->archivo, PATHINFO_FILENAME);
             $nuevoNombre = $nombreBase . '.mp3';
             $nuevoPath = storage_path('app/public/reuniones/' . $nuevoNombre);
 
-            try {
-                $ffmpeg = \FFMpeg\FFMpeg::create([
-                    'ffmpeg.binaries' => 'C:\ffmpeg\bin\ffmpeg.exe',
-                    'ffprobe.binaries' => 'C:\ffmpeg\bin\ffprobe.exe',
-                ]);
-
-                $video = $ffmpeg->open($pathOriginal);
-                $video->save(new \FFMpeg\Format\Audio\Mp3(), $nuevoPath);
-
-                Storage::disk('public')->delete($this->meeting->archivo);
-                $this->meeting->update([
-                    'archivo' => 'reuniones/' . $nuevoNombre,
-                    'formato_origen' => 'audio_extraido',
-                ]);
-                Log::info('✅ Audio extraído y archivo actualizado');
-            } catch (\Throwable $e) {
-                Log::error('❌ Error al extraer audio', [
-                    'mensaje' => $e->getMessage(),
-                    'archivo' => $pathOriginal
-                ]);
-                return;
-            }
-        }
-
-        // Verificar que el archivo existe
-        if (!file_exists($nuevoPath)) {
-            Log::error('❌ Archivo no encontrado', ['path' => $nuevoPath]);
-            return;
-        }
-
-        // 2. Transcripción con Whisper
-        Log::info('🧠 Enviando a Whisper', ['archivo' => basename($nuevoPath)]);
-
-        try {
-            $response = Http::timeout(300) // 5 minutos
-                ->attach('file', fopen($nuevoPath, 'r'), basename($nuevoPath))
-                ->withToken(config('services.openai.key'))
-                ->post('https://api.openai.com/v1/audio/transcriptions', [
-                    'model' => 'whisper-1',
-                    'language' => 'es',
-                ]);
-
-            if (!$response->ok()) {
-                Log::error('❌ Error en transcripción Whisper', [
-                    'status' => $response->status(),
-                    'body' => $response->body()
-                ]);
-                return;
-            }
-
-            $transcripcion = $response->json('text') ?? '';
-            Log::info('📝 Transcripción recibida', ['preview' => Str::limit($transcripcion, 100)]);
-
-        } catch (\Throwable $e) {
-            Log::error('❌ Error al llamar a Whisper', [
-                'mensaje' => $e->getMessage(),
-                'linea' => $e->getLine(),
+            $ffmpeg = \FFMpeg\FFMpeg::create([
+                'ffmpeg.binaries' => 'C:\ffmpeg\bin\ffmpeg.exe',
+                'ffprobe.binaries' => 'C:\ffmpeg\bin\ffprobe.exe',
             ]);
-            return;
+
+            $video = $ffmpeg->open($pathOriginal);
+            $video->save(new \FFMpeg\Format\Audio\Mp3(), $nuevoPath);
+
+            // Actualizar registro
+            Storage::disk('public')->delete($this->meeting->archivo);
+            $this->meeting->update([
+                'archivo' => 'reuniones/' . $nuevoNombre,
+                'formato_origen' => 'audio_extraido',
+            ]);
+            
+            return $nuevoPath;
+        }
+        
+        return $pathOriginal;
+    }
+
+    private function transcribirAudio($audioPath)
+    {
+        Log::info('🧠 Transcribiendo audio con Whisper');
+
+        $response = Http::timeout(300)
+            ->attach('file', fopen($audioPath, 'r'), basename($audioPath))
+            ->withToken(config('services.openai.key'))
+            ->post('https://api.openai.com/v1/audio/transcriptions', [
+                'model' => 'whisper-1',
+            ]);
+
+        if (!$response->successful()) {
+            throw new \Exception('Error en transcripción: ' . $response->body());
         }
 
-        // 3. Análisis completo con GPT (Resumen + Tareas + Insights)
-        if ($transcripcion) {
-            $prompt = <<<PROMPT
-Eres un asistente de productividad. A partir de esta transcripción de una reunión:
+        $transcripcion = $response->json()['text'] ?? '';
+        Log::info('📝 Transcripción completada', ['length' => strlen($transcripcion)]);
+        
+        return $transcripcion;
+    }
 
------
-$transcripcion
------
+    private function generarResumenYTareas($transcripcion)
+    {
+        Log::info('🤖 Generando resumen y tareas con GPT-4');
 
-Extrae:
-1. Un resumen ejecutivo claro y estructurado.
-2. Lista de tareas con responsables si se mencionan.
-3. Decisiones importantes tomadas (si las hay).
-4. Insight conductual (por ejemplo, quién habló más, tono general, dinámicas del equipo).
+        // Generar resumen
+        $resumen = $this->generarResumen($transcripcion);
+        
+        // Extraer tareas
+        $tareas = $this->extraerTareas($transcripcion);
 
-Formato: Markdown.
-PROMPT;
+        return [
+            'resumen' => $resumen,
+            'tareas' => $tareas
+        ];
+    }
 
-            try {
-                Log::info('🧾 Enviando a GPT para análisis completo');
-                $respuestaAnalisis = Http::withToken(config('services.openai.key'))
-                    ->post('https://api.openai.com/v1/chat/completions', [
-                        'model' => 'gpt-4o-mini-2024-07-18',
-                        'messages' => [
-                            ['role' => 'system', 'content' => 'Eres un asistente experto en análisis de reuniones.'],
-                            ['role' => 'user', 'content' => $prompt],
-                        ],
-                        'temperature' => 0.5,
-                    ]);
+    private function generarResumen($transcripcion)
+    {
+        $prompt = <<<TXT
+        Actúa como un asistente profesional y redacta un resumen ejecutivo de esta reunión.
 
-                if (!$respuestaAnalisis->ok()) {
-                    Log::error('❌ Error en GPT análisis', [
-                        'status' => $respuestaAnalisis->status(),
-                        'body' => $respuestaAnalisis->body()
-                    ]);
-                    return;
-                }
+        Incluye:
+        1. Objetivo de la reunión
+        2. Puntos clave tratados
+        3. Decisiones tomadas
+        4. Próximos pasos (si los hay)
 
-                $analisisCompleto = $respuestaAnalisis->json('choices.0.message.content') ?? '';
-                Log::info('✅ Análisis completo generado', ['preview' => Str::limit($analisisCompleto, 150)]);
+        Sé claro, profesional y directo. Redacta en un tono neutro y ordenado.
 
-            } catch (\Throwable $e) {
-                Log::error('❌ Error al generar análisis', [
-                    'mensaje' => $e->getMessage(),
-                    'linea' => $e->getLine(),
-                ]);
-                return;
-            }
+        Texto de la reunión:
+        ---
+        $transcripcion
+        TXT;
 
-            // 4. Extraer tareas específicas del análisis
-            $promptTareas = <<<TXT
-Del siguiente análisis de reunión, extrae SOLO las tareas pendientes en formato de lista numerada:
+        $response = Http::withToken(config('services.openai.key'))
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o-mini',
+                'messages' => [
+                    ['role' => 'system', 'content' => 'Eres un asistente experto en resumir reuniones.'],
+                    ['role' => 'user', 'content' => $prompt],
+                ],
+            ]);
 
-$analisisCompleto
+        if (!$response->successful()) {
+            throw new \Exception('Error generando resumen: ' . $response->body());
+        }
 
-Formato requerido:
-1. [Responsable]: [Acción concreta] (Fecha si la hay)
+        return $response->json()['choices'][0]['message']['content'] ?? '';
+    }
 
-Si no hay tareas claras, responde: "NINGUNA"
-TXT;
+    private function extraerTareas($transcripcion)
+    {
+        $prompt = <<<TXT
+        Extrae una lista clara y numerada de tareas pendientes encontradas en esta transcripción.
 
-            try {
-                Log::info('🗂 Extrayendo tareas específicas');
-                $respuestaTareas = Http::withToken(config('services.openai.key'))
-                    ->post('https://api.openai.com/v1/chat/completions', [
-                        'model' => 'gpt-4o-mini-2024-07-18',
-                        'messages' => [
-                            ['role' => 'system', 'content' => 'Eres un asistente que extrae tareas de análisis de reuniones.'],
-                            ['role' => 'user', 'content' => $promptTareas],
-                        ],
-                    ]);
+        Por cada tarea, indica:
+        - Responsable (si aparece)
+        - Acción concreta
+        - Fecha límite (si se menciona)
 
-                $tareasTexto = $respuestaTareas->json('choices.0.message.content') ?? '';
-                Log::info('✅ Tareas extraídas', ['tareas_texto' => $tareasTexto]);
+        Formato:
+        1. [Responsable]: [Acción] (Fecha si la hay)
 
-                // Guardar tareas en la base de datos
-                if (strtoupper(trim($tareasTexto)) !== 'NINGUNA') {
-                    $tareas = explode("\n", $tareasTexto);
+        Si no hay tareas, responde sólo con: "NINGUNA"
 
-                    foreach ($tareas as $linea) {
-                        $descripcion = preg_replace('/^\d+\.\s*/', '', trim($linea));
-                        if ($descripcion && strlen($descripcion) > 3) {
-                            $this->meeting->tasks()->create([
-                                'descripcion' => $descripcion,
-                            ]);
-                            Log::info('📌 Tarea guardada', ['descripcion' => $descripcion]);
-                        }
-                    }
-                }
+        Texto de la reunión:
+        ---
+        $transcripcion
+        TXT;
 
-            } catch (\Throwable $e) {
-                Log::error('❌ Error al extraer tareas', [
-                    'mensaje' => $e->getMessage(),
-                ]);
+        $response = Http::withToken(config('services.openai.key'))
+            ->post('https://api.openai.com/v1/chat/completions', [
+                'model' => 'gpt-4o-mini',
+                'messages' => [
+                    ['role' => 'system', 'content' => 'Eres un asistente que extrae tareas de reuniones.'],
+                    ['role' => 'user', 'content' => $prompt],
+                ],
+            ]);
+
+        if (!$response->successful()) {
+            throw new \Exception('Error extrayendo tareas: ' . $response->body());
+        }
+
+        $tareasTexto = $response->json()['choices'][0]['message']['content'] ?? '';
+        
+        if (strtoupper(trim($tareasTexto)) === 'NINGUNA') {
+            return [];
+        }
+
+        // Procesar líneas de tareas
+        $tareas = [];
+        $lineas = explode("\n", $tareasTexto);
+        
+        foreach ($lineas as $linea) {
+            $descripcion = preg_replace('/^\d+\.\s*/', '', trim($linea));
+            if (!empty($descripcion)) {
+                $tareas[] = $descripcion;
             }
         }
 
-        // 5. Guardar transcripción y análisis completo
+        return $tareas;
+    }
+
+    private function guardarResultados($transcripcion, $resultado)
+    {
+        Log::info('💾 Guardando resultados en base de datos');
+
+        // Actualizar meeting
         $this->meeting->update([
             'transcripcion' => $transcripcion,
-            'resumen' => $analisisCompleto ?? '', // Ahora guardamos el análisis completo como resumen
+            'resumen' => $resultado['resumen'],
         ]);
-        Log::info('🗃 Reunión actualizada en DB');
 
-        // 6. Enviar a N8N
-        $this->enviarWebhookN8N();
-    }
-
-    private function enviarWebhookN8N()
-    {
-        try {
-            $payload = [
-                'reunion_id' => $this->meeting->id,
-                'titulo' => $this->meeting->titulo,
-                'resumen' => $this->meeting->resumen,
-                'tareas' => $this->meeting->tasks->pluck('descripcion')->toArray(),
-                'email_usuario' => $this->meeting->user->email,
-                'fecha_procesado' => now()->toISOString(),
-            ];
-
-            // Agregar datos de Google Sheets si está habilitado
-            if ($this->meeting->guardar_en_google_sheets) {
-                $integration = $this->meeting->user->integrations()->where('tipo', 'google_sheets')->first();
-                $config = json_decode($integration?->config ?? '{}', true);
-
-                if ($integration && isset($config['spreadsheet_id'])) {
-                    $payload['google_sheets'] = [
-                        'access_token' => $integration->token,
-                        'spreadsheet_id' => $config['spreadsheet_id'],
-                        'sheet_name' => $config['sheet_name'] ?? 'Hoja 1',
-                        'contenido' => [
-                            'titulo' => $this->meeting->titulo,
-                            'resumen' => $this->meeting->resumen,
-                            'tareas' => $this->meeting->tasks->pluck('descripcion')->toArray(),
-                            'fecha' => $this->meeting->created_at->format('Y-m-d H:i:s'),
-                        ],
-                    ];
-                }
-            }
-
-            Log::info('🚀 Enviando webhook a N8N', [
-                'url' => env('N8N_WEBHOOK_URL'),
-                'meeting_id' => $this->meeting->id,
-            ]);
-
-            $respuestaN8n = Http::timeout(30)->post(env('N8N_WEBHOOK_URL'), $payload);
-            
-            Log::info('✅ Respuesta de N8N', [
-                'status' => $respuestaN8n->status(),
-                'meeting_id' => $this->meeting->id,
-            ]);
-
-        } catch (\Throwable $e) {
-            Log::error('❌ Error al enviar webhook a N8N', [
-                'mensaje' => $e->getMessage(),
-                'meeting_id' => $this->meeting->id,
+        // Guardar tareas
+        foreach ($resultado['tareas'] as $tareaDescripcion) {
+            $this->meeting->tasks()->create([
+                'descripcion' => $tareaDescripcion,
             ]);
         }
     }
 
-    public function failed(\Throwable $exception)
+    private function enviarAIntegraciones($resultado)
     {
-        Log::error('❌ Job ProcesarReunionSubida falló', [
-            'meeting_id' => $this->meeting->id,
-            'error' => $exception->getMessage(),
-            'trace' => $exception->getTraceAsString(),
-        ]);
+        Log::info('🔗 Enviando a integraciones activas');
+
+        $user = $this->meeting->user;
+        $integrations = $user->integrations;
+
+        foreach ($integrations as $integration) {
+            try {
+                switch ($integration->tipo) {
+                    case 'notion':
+                        $this->enviarANotion($integration, $resultado);
+                        break;
+                    
+                    case 'slack':
+                        $this->enviarASlack($integration, $resultado);
+                        break;
+                    
+                    case 'google_sheets':
+                        $this->enviarAGoogleSheets($integration, $resultado);
+                        break;
+                }
+            } catch (\Exception $e) {
+                Log::error("❌ Error enviando a {$integration->tipo}", [
+                    'integration_id' => $integration->id,
+                    'error' => $e->getMessage()
+                ]);
+                // Continúa con otras integraciones aunque una falle
+            }
+        }
+    }
+
+    private function enviarANotion($integration, $resultado)
+    {
+        $config = json_decode($integration->config ?? '{}', true);
+        $databaseId = $config['database_id'] ?? null;
+
+        if (!$databaseId) {
+            Log::warning('⚠️ Notion: No se ha configurado database_id');
+            return;
+        }
+
+        $notion = new NotionService($integration->token);
+        $response = $notion->enviarResumenReunion(
+            $databaseId,
+            $this->meeting->titulo ?? 'Reunión sin título',
+            $resultado['resumen'],
+            $resultado['tareas']
+        );
+
+        if ($response['success']) {
+            Log::info('✅ Enviado a Notion exitosamente');
+        } else {
+            Log::error('❌ Error enviando a Notion', ['error' => $response['error']]);
+        }
+    }
+
+    private function enviarASlack($integration, $resultado)
+    {
+        $config = json_decode($integration->config ?? '{}', true);
+        $canal = $config['channel'] ?? '#general';
+
+        $slack = new SlackService($integration->token);
+        $response = $slack->enviarResumenReunion(
+            $canal,
+            $this->meeting->titulo ?? 'Reunión sin título',
+            $resultado['resumen'],
+            $resultado['tareas']
+        );
+
+        if ($response['success']) {
+            Log::info('✅ Enviado a Slack exitosamente');
+        } else {
+            Log::error('❌ Error enviando a Slack', ['error' => $response['error']]);
+        }
+    }
+
+    private function enviarAGoogleSheets($integration, $resultado)
+    {
+        $config = json_decode($integration->config ?? '{}', true);
+        $spreadsheetId = $config['spreadsheet_id'] ?? null;
+        $sheetName = $config['sheet_name'] ?? 'Hoja 1';
+
+        if (!$spreadsheetId) {
+            Log::warning('⚠️ Google Sheets: No se ha configurado spreadsheet_id');
+            return;
+        }
+
+        $sheets = new GoogleSheetsService($integration->token);
+        
+        // Configurar cabeceras si es necesario
+        $sheets->configurarCabeceras($spreadsheetId, $sheetName);
+        
+        // Añadir fila con datos
+        $response = $sheets->agregarResumenReunion(
+            $spreadsheetId,
+            $sheetName,
+            $this->meeting->titulo ?? 'Reunión sin título',
+            $resultado['resumen'],
+            $resultado['tareas']
+        );
+
+        if ($response['success']) {
+            Log::info('✅ Enviado a Google Sheets exitosamente');
+        } else {
+            Log::error('❌ Error enviando a Google Sheets', ['error' => $response['error']]);
+        }
+    }
+
+    private function enviarNotificaciones($resultado)
+    {
+        Log::info('📧 Enviando notificaciones');
+
+        // Webhook a N8N (como ya tenías)
+        $this->enviarWebhookN8n($resultado);
+        
+        // Aquí podrías añadir otras notificaciones como email directo
+    }
+
+    private function enviarWebhookN8n($resultado)
+    {
+        $payload = [
+            'reunion_id' => $this->meeting->id,
+            'titulo' => $this->meeting->titulo,
+            'resumen' => $resultado['resumen'],
+            'tareas' => $resultado['tareas'],
+            'email_usuario' => $this->meeting->user->email,
+        ];
+
+        // Añadir info de Google Sheets si está configurado
+        if ($this->meeting->guardar_en_google_sheets) {
+            $integration = $this->meeting->user->integrations()
+                ->where('tipo', 'google_sheets')
+                ->first();
+                
+            if ($integration) {
+                $config = json_decode($integration->config ?? '{}', true);
+                $payload['google_sheets'] = [
+                    'access_token' => $integration->token,
+                    'spreadsheet_id' => $config['spreadsheet_id'] ?? null,
+                    'sheet_name' => $config['sheet_name'] ?? 'Hoja 1',
+                ];
+            }
+        }
+
+        try {
+            $response = Http::post(env('N8N_WEBHOOK_URL'), $payload);
+            
+            Log::info('✅ Webhook N8N enviado', [
+                'status' => $response->status(),
+                'body_preview' => Str::limit($response->body(), 200)
+            ]);
+        } catch (\Exception $e) {
+            Log::error('❌ Error enviando webhook N8N', [
+                'error' => $e->getMessage()
+            ]);
+        }
     }
 }

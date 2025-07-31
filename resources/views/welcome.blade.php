@@ -197,23 +197,7 @@
         <!-- Main app interface preview -->
         <div class="rounded-3xl shadow-2xl border border-gray-700/50 overflow-hidden bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-xl transform transition-transform hover:scale-[1.01] duration-500">
             <img src="/img/ui-preview.png" alt="Vista previa de la interfaz" class="w-full object-cover" onerror="this.src='https://placehold.co/1200x600/1f1f23/orange?text=Sumora+Interface'">
-        </div>
-        
-        <!-- Floating elements -->
-        <div class="absolute -top-10 -left-10 md:left-10 transform rotate-[-6deg] bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 w-64 hidden md:block">
-            <div class="flex items-center gap-3">
-                <div class="h-10 w-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">AI</div>
-                <div class="flex-1">
-                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-3/4 mb-2"></div>
-                    <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-1/2"></div>
-                </div>
-            </div>
-            <div class="mt-3">
-                <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-full mb-2"></div>
-                <div class="h-2 bg-gray-200 dark:bg-gray-700 rounded-full w-5/6"></div>
-            </div>
-            <div class="ribbon">AI generado</div>
-        </div>
+        </div>       
         
         <div class="absolute -bottom-8 right-10 transform rotate-[3deg] bg-orange-500 rounded-lg shadow-xl p-3 w-48 hidden md:block">
             <div class="flex items-center gap-2 text-white">

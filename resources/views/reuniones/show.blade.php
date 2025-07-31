@@ -198,6 +198,7 @@
         </div>
 
         <!-- Sidebar: Tareas -->
+       <!-- Sidebar: Tareas y Acciones -->
         <div class="space-y-6">
             <!-- Lista de tareas -->
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
@@ -217,34 +218,71 @@
 
                 @if($meeting->tasks->count() > 0)
                     <div class="space-y-3">
-                        @foreach($meeting->tasks as $task)
-                        <div class="flex items-start gap-3 p-3 bg-gray-900/50 rounded-lg hover:bg-gray-900/70 transition-colors">
-                            <button onclick="toggleTask({{ $task->id }})" class="mt-1 flex-shrink-0">
-                                <div class="w-5 h-5 rounded border-2 border-gray-600 flex items-center justify-center task-checkbox {{ $task->completada ? 'bg-green-500 border-green-500' : 'hover:border-green-500' }} transition-colors">
-                                    @if($task->completada)
-                                        <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
-                                        </svg>
-                                    @endif
+                        @foreach($meeting->tasks as $index => $task)
+                        <div class="p-4 bg-gray-900/50 rounded-lg border border-gray-700/30 hover:border-gray-600/50 transition-all">
+                            <div class="flex items-start justify-between mb-3">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm text-gray-300 leading-relaxed">
+                                        <span class="text-orange-400 font-medium">{{ $index + 1 }}.</span>
+                                        {{ $task->descripcion }}
+                                    </p>
                                 </div>
-                            </button>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm text-gray-300 {{ $task->completada ? 'line-through opacity-60' : '' }}">
-                                    {{ $task->descripcion }}
-                                </p>
+                                <div class="flex items-center gap-2 ml-3">
+                                    <!-- Dropdown de acciones -->
+                                    <div class="relative" x-data="{ open: false }">
+                                        <button @click="open = !open" class="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg transition-colors">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                            </svg>
+                                        </button>
+                                        
+                                        <div x-show="open" @click.away="open = false" 
+                                             x-transition:enter="transition ease-out duration-100"
+                                             x-transition:enter-start="transform opacity-0 scale-95"
+                                             x-transition:enter-end="transform opacity-100 scale-100"
+                                             class="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-xl border border-gray-700 z-20">
+                                            
+                                            <div class="p-2">
+                                                <button onclick="copyTask({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                                    </svg>
+                                                    Copiar tarea
+                                                </button>
+                                                
+                                                @if(auth()->user()->integrations->where('tipo', 'slack')->count() > 0)
+                                                <button onclick="sendToSlack({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
+                                                    </svg>
+                                                    Enviar a Slack
+                                                </button>
+                                                @endif
+                                                
+                                                @if(auth()->user()->integrations->where('tipo', 'notion')->count() > 0)
+                                                <button onclick="sendToNotion({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466l1.823 1.447zm1.775 2.055c.187.466.187.886.187 1.727v13.775c0 .746.373 1.027 1.213 1.027.933 0 1.353-.28 1.727-1.12l7.318-11.85c.14-.186.047-.373-.094-.373l-3.896.7c-.28.047-.327.234-.187.42l4.734 7.318c.047.047.047.094.047.187v-1.727l-4.734-7.318c-.094-.14-.14-.326-.047-.514l.886-1.96c.187-.466.047-.98-.42-1.12L4.696 3.628c-.42-.14-.933 0-1.12.42l-.374.793c-.14.326-.28.7-.28 1.213L3.01 6.24c0 .466.28.653.653.653h2.147c.326-.047.42-.28.42-.606zm6.638 2.568c.187-.14.467-.047.653.093l1.12.84c.187.187.187.33.187.514v.046l-1.214 1.68-1.493-1.4c-.094-.187-.094-.33-.047-.514l.794-1.26zm-3.57 11.664c-.14.187-.047.373.094.467l1.214.84c.187.14.373.094.513-.047l2.708-3.734V8.954l-1.214 1.826-3.316 4.56z"/>
+                                                    </svg>
+                                                    Enviar a Notion
+                                                </button>
+                                                @endif
+                                                
+                                                @if(auth()->user()->integrations->where('tipo', 'google_sheets')->count() > 0)
+                                                <button onclick="sendToSheets({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                                                    <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+                                                        <path d="M19.11 2H4.89A2.89 2.89 0 002 4.89v14.22A2.89 2.89 0 004.89 22h14.22A2.89 2.89 0 0022 19.11V4.89A2.89 2.89 0 0019.11 2zM8 6h8v2H8V6zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/>
+                                                    </svg>
+                                                    Enviar a Sheets
+                                                </button>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         @endforeach
-                    </div>
-
-                    <div class="mt-6 pt-4 border-t border-gray-700/50">
-                        <div class="flex justify-between text-sm text-gray-400">
-                            <span>Progreso:</span>
-                            <span>{{ $meeting->tasks->where('completada', true)->count() }} / {{ $meeting->tasks->count() }}</span>
-                        </div>
-                        <div class="mt-2 w-full bg-gray-700 rounded-full h-2">
-                            <div class="bg-green-500 h-2 rounded-full transition-all duration-300" style="width: {{ $meeting->tasks->count() > 0 ? ($meeting->tasks->where('completada', true)->count() / $meeting->tasks->count()) * 100 : 0 }}%"></div>
-                        </div>
                     </div>
                 @else
                     <div class="text-center py-8">
@@ -255,6 +293,96 @@
                     </div>
                 @endif
             </div>
+
+            <!-- Panel de acciones masivas -->
+            @if($meeting->tasks->count() > 0)
+            <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Acciones rápidas
+                </h3>
+
+                <div class="space-y-3">
+                    <!-- Enviar todas las tareas -->
+                    @if(auth()->user()->integrations->count() > 0)
+                    <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700/30">
+                        <h4 class="text-sm font-medium text-white mb-3">Enviar todas las tareas:</h4>
+                        <div class="grid grid-cols-1 gap-2">
+                            @if(auth()->user()->integrations->where('tipo', 'slack')->count() > 0)
+                            <button onclick="sendAllTasksTo('slack')" class="flex items-center justify-center px-3 py-2 bg-green-600/20 hover:bg-green-600/30 text-green-300 rounded-lg transition-colors text-sm border border-green-600/30">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/>
+                                </svg>
+                                Todas a Slack
+                            </button>
+                            @endif
+                            
+                            @if(auth()->user()->integrations->where('tipo', 'notion')->count() > 0)
+                            <button onclick="sendAllTasksTo('notion')" class="flex items-center justify-center px-3 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors text-sm border border-blue-600/30">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466l1.823 1.447z"/>
+                                </svg>
+                                Todas a Notion
+                            </button>
+                            @endif
+                            
+                            @if(auth()->user()->integrations->where('tipo', 'google_sheets')->count() > 0)
+                            <button onclick="sendAllTasksTo('sheets')" class="flex items-center justify-center px-3 py-2 bg-green-600/20 hover:bg-green-600/30 text-green-300 rounded-lg transition-colors text-sm border border-green-600/30">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19.11 2H4.89A2.89 2.89 0 002 4.89v14.22A2.89 2.89 0 004.89 22h14.22A2.89 2.89 0 0022 19.11V4.89A2.89 2.89 0 0019.11 2z"/>
+                                </svg>
+                                Todas a Sheets
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                    @endif
+
+                    <!-- Copiar todo -->
+                    <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700/30">
+                        <h4 class="text-sm font-medium text-white mb-3">Exportar contenido:</h4>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="copyAllTasks()" class="flex items-center justify-center px-3 py-2 bg-gray-600/20 hover:bg-gray-600/30 text-gray-300 rounded-lg transition-colors text-sm border border-gray-600/30">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                                Copiar lista
+                            </button>
+                            <button onclick="exportToMarkdown()" class="flex items-center justify-center px-3 py-2 bg-purple-600/20 hover:bg-purple-600/30 text-purple-300 rounded-lg transition-colors text-sm border border-purple-600/30">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                Markdown
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                @if(auth()->user()->integrations->count() === 0)
+                <div class="mt-4 p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+                    <div class="flex items-start gap-3">
+                        <svg class="w-5 h-5 text-orange-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm text-orange-300 font-medium">Conecta tus herramientas</p>
+                            <p class="text-xs text-orange-400/80 mt-1">
+                                Configura Slack, Notion o Google Sheets para enviar tareas automáticamente.
+                            </p>
+                            <a href="{{ route('integrations.index') }}" class="inline-flex items-center mt-2 text-xs text-orange-400 hover:text-orange-300 underline">
+                                Configurar integraciones
+                                <svg class="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </div>
+            @endif
 
             <!-- Información del archivo -->
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
@@ -267,7 +395,7 @@
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between">
                         <span class="text-gray-400">Nombre:</span>
-                        <span class="text-gray-300">{{ basename($meeting->archivo) }}</span>
+                        <span class="text-gray-300 overflow-hidden">{{ basename($meeting->archivo) }}</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-400">Tipo:</span>
@@ -390,6 +518,119 @@ setTimeout(() => {
     window.location.reload();
 }, 30000); // Recargar cada 30 segundos
 @endif
+
+
+// Funciones para manejar envío de tareas individuales
+function copyTask(taskId) {
+    const task = @json($meeting->tasks);
+    const taskData = task.find(t => t.id === taskId);
+    
+    navigator.clipboard.writeText(taskData.descripcion).then(() => {
+        showNotification('success', 'Tarea copiada al portapapeles');
+    });
+}
+
+function sendToSlack(taskId) {
+    sendTaskTo(taskId, 'slack');
+}
+
+function sendToNotion(taskId) {
+    sendTaskTo(taskId, 'notion');
+}
+
+function sendToSheets(taskId) {
+    sendTaskTo(taskId, 'sheets');
+}
+
+function sendTaskTo(taskId, platform) {
+    fetch(`/tasks/${taskId}/send`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ platform: platform })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('success', `Tarea enviada a ${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
+        } else {
+            showNotification('error', 'Error al enviar la tarea');
+        }
+    })
+    .catch(error => {
+        showNotification('error', 'Error de conexión');
+    });
+}
+
+// Funciones para acciones masivas
+function sendAllTasksTo(platform) {
+    fetch(`/meetings/{{ $meeting->id }}/send-all-tasks`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ platform: platform })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showNotification('success', `Todas las tareas enviadas a ${platform.charAt(0).toUpperCase() + platform.slice(1)}`);
+        } else {
+            showNotification('error', 'Error al enviar las tareas');
+        }
+    })
+    .catch(error => {
+        showNotification('error', 'Error de conexión');
+    });
+}
+
+function copyAllTasks() {
+    const tasks = @json($meeting->tasks->pluck('descripcion'));
+    const taskList = tasks.map((task, index) => `${index + 1}. ${task}`).join('\n');
+    
+    navigator.clipboard.writeText(taskList).then(() => {
+        showNotification('success', 'Lista de tareas copiada al portapapeles');
+    });
+}
+
+function exportToMarkdown() {
+    const tasks = @json($meeting->tasks->pluck('descripcion'));
+    const meetingTitle = '{{ $meeting->titulo ?? "Reunión sin título" }}';
+    
+    let markdown = `# ${meetingTitle}\n\n## Tareas extraídas\n\n`;
+   markdown += tasks.map((task, index) => `${index + 1}. ${task}`).join('\n');
+   markdown += `\n\n---\n*Generado por Meetlyze el ${new Date().toLocaleDateString()}*`;
+   
+   // Crear blob y descargar
+   const blob = new Blob([markdown], { type: 'text/markdown' });
+   const url = window.URL.createObjectURL(blob);
+   const a = document.createElement('a');
+   a.href = url;
+   a.download = `${meetingTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_tareas.md`;
+   document.body.appendChild(a);
+   a.click();
+   document.body.removeChild(a);
+   window.URL.revokeObjectURL(url);
+   
+   showNotification('success', 'Archivo Markdown descargado');
+}
+
+// Función helper para notificaciones
+function showNotification(type, message) {
+   Swal.fire({
+       icon: type,
+       title: type === 'success' ? 'Éxito' : 'Error',
+       text: message,
+       timer: 3000,
+       showConfirmButton: false,
+       toast: true,
+       position: 'top-end'
+   });
+}
+    
 </script>
 
 @endsection
