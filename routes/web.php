@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\IntegrationController;
+use App\Http\Controllers\TestIntegrationController;
+use App\Http\Controllers\GoogleDebugController;
+use App\Http\Controllers\TaskController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,13 +34,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/integrations', [IntegrationController::class, 'index'])->name('integrations.index');
     Route::post('/integrations', [IntegrationController::class, 'store'])->name('integrations.store');
     Route::delete('/integrations/{integration}', [IntegrationController::class, 'destroy'])->name('integrations.destroy');
+    Route::get('/integrations/notion/databases', [IntegrationController::class, 'listNotionDatabases'])->name('integrations.notion.databases');
+    Route::post('/integrations/notion/databases/save', [IntegrationController::class, 'saveNotionDatabase'])->name('integrations.notion.database.save');
 
     // Test integrations
     Route::post('/test/notion', [App\Http\Controllers\TestIntegrationController::class, 'testNotion'])->name('test.notion');
     Route::post('/test/slack', [App\Http\Controllers\TestIntegrationController::class, 'testSlack'])->name('test.slack');
     Route::post('/test/google-sheets', [App\Http\Controllers\TestIntegrationController::class, 'testGoogleSheets'])->name('test.google-sheets');
     Route::post('/test/all-integrations', [App\Http\Controllers\TestIntegrationController::class, 'testAll'])->name('test.all-integrations');
-
+    Route::post('/tasks/{task}/send', [App\Http\Controllers\TaskController::class, 'sendTask'])->name('tasks.send');
+    Route::post('/meetings/{meeting}/send-all-tasks', [MeetingController::class, 'sendAllTasks'])->name('meetings.send-all-tasks');
     // Google Debug
     Route::get('/debug/google', [App\Http\Controllers\GoogleDebugController::class, 'debug'])->name('debug.google');
     Route::get('/debug/google/spreadsheets', [App\Http\Controllers\GoogleDebugController::class, 'listSpreadsheets'])->name('debug.google.spreadsheets');

@@ -71,27 +71,48 @@
         <form method="POST" action="{{ route('integrations.store') }}" class="space-y-6">
             @csrf
 
-            <!-- Notion API Key -->
             <div class="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 transition-all duration-300 hover:border-orange-500/30 hover:shadow-lg hover:shadow-orange-500/10">
-                <label for="notion_api" class="flex items-center gap-3 mb-3 text-white">
-                    <div class="bg-gradient-to-br from-orange-500/20 to-red-600/20 p-2 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466l1.823 1.447zm1.775 2.055c.187.466.187.886.187 1.727v13.775c0 .746.373 1.027 1.213 1.027.933 0 1.353-.28 1.727-1.12l7.318-11.85c.14-.186.047-.373-.094-.373l-3.896.7c-.28.047-.327.234-.187.42l4.734 7.318c.047.047.047.094.047.187v-1.727l-4.734-7.318c-.094-.14-.14-.326-.047-.514l.886-1.96c.187-.466.047-.98-.42-1.12L4.696 3.628c-.42-.14-.933 0-1.12.42l-.374.793c-.14.326-.28.7-.28 1.213L3.01 6.24c0 .466.28.653.653.653h2.147c.326-.047.42-.28.42-.606zm6.638 2.568c.187-.14.467-.047.653.093l1.12.84c.187.187.187.33.187.514v.046l-1.214 1.68-1.493-1.40c-.094-.187-.094-.33-.047-.514l.794-1.26zm-3.57 11.664c-.14.187-.047.373.094.467l1.214.84c.187.14.373.094.513-.047l2.708-3.734V8.954l-1.214 1.826-3.316 4.56z"/>
-                        </svg>
-                    </div>
-                    <span class="font-medium">Notion API Key</span>
-                </label>
-                <input id="notion_api" name="notion_api" type="text" placeholder="secret_xxx..."
-                       class="mt-1 block w-full bg-gray-900/50 text-white border border-gray-700 rounded-lg p-3 shadow-sm focus:ring-orange-500 focus:border-orange-500 transition-all duration-300" />
-                <p class="text-sm mt-3">
-                    <a href="https://developers.notion.com/docs/getting-started" target="_blank" class="inline-flex items-center text-orange-400 hover:text-orange-300 transition-colors duration-300 group">
-                        <span class="underline-offset-4 group-hover:underline">¿Cómo obtenerla?</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform transition-transform group-hover:translate-x-0.5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </p>
+    <label for="notion_api" class="flex items-center gap-3 mb-3 text-white">
+        <div class="bg-gradient-to-br from-orange-500/20 to-red-600/20 p-2 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466l1.823 1.447zm1.775 2.055c.187.466.187.886.187 1.727v13.775c0 .746.373 1.027 1.213 1.027.933 0 1.353-.28 1.727-1.12l7.318-11.85c.14-.186.047-.373-.094-.373l-3.896.7c-.28.047-.327.234-.187.42l4.734 7.318c.047.047.047.094.047.187v-1.727l-4.734-7.318c-.094-.14-.14-.326-.047-.514l.886-1.96c.187-.466.047-.98-.42-1.12L4.696 3.628c-.42-.14-.933 0-1.12.42l-.374.793c-.14.326-.28.7-.28 1.213L3.01 6.24c0 .466.28.653.653.653h2.147c.326-.047.42-.28.42-.606zm6.638 2.568c.187-.14.467-.047.653.093l1.12.84c.187.187.187.33.187.514v.046l-1.214 1.68-1.493-1.4c-.094-.187-.094-.33-.047-.514l.794-1.26zm-3.57 11.664c-.14.187-.047.373.094.467l1.214.84c.187.14.373.094.513-.047l2.708-3.734V8.954l-1.214 1.826-3.316 4.56z"/>
+            </svg>
+        </div>
+        <div class="flex-1">
+            <span class="font-medium">Notion API Key</span>
+            @if(auth()->user()->integrations->where('tipo', 'notion')->count() > 0)
+                <span class="ml-2 px-2 py-1 bg-green-500/20 text-green-300 text-xs rounded-full">Configurada</span>
+            @endif
+        </div>
+    </label>
+    
+    <input id="notion_api" name="notion_api" type="text" placeholder="secret_xxx..."
+           value="{{ auth()->user()->integrations->where('tipo', 'notion')->first()?->token }}"
+           class="mt-1 block w-full bg-gray-900/50 text-white border border-gray-700 rounded-lg p-3 shadow-sm focus:ring-orange-500 focus:border-orange-500 transition-all duration-300" />
+    
+    <div class="flex items-center justify-between mt-3">
+        <p class="text-sm">
+            <a href="https://developers.notion.com/docs/getting-started" target="_blank" class="inline-flex items-center text-orange-400 hover:text-orange-300 transition-colors duration-300 group">
+                <span class="underline-offset-4 group-hover:underline">¿Cómo obtenerla?</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform transition-transform group-hover:translate-x-0.5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+            </a>
+        </p>
+        
+        @if(auth()->user()->integrations->where('tipo', 'notion')->count() > 0)
+            @php $notionConfig = json_decode(auth()->user()->integrations->where('tipo', 'notion')->first()->config ?? '{}', true); @endphp
+            <div class="flex items-center gap-2">
+                @if(isset($notionConfig['database_id']))
+                    <span class="text-xs text-green-300">✓ Database: {{ $notionConfig['database_title'] ?? 'Configurada' }}</span>
+                @endif
+                <a href="{{ route('integrations.notion.databases') }}" class="text-xs text-blue-400 hover:text-blue-300 underline">
+                    {{ isset($notionConfig['database_id']) ? 'Cambiar' : 'Seleccionar' }} database
+                </a>
             </div>
+        @endif
+    </div>
+</div>
 
             <!-- Google Sheets Token -->
             <div class="group bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 transition-all duration-300 hover:border-orange-500/30 hover:shadow-lg hover:shadow-orange-500/10">
