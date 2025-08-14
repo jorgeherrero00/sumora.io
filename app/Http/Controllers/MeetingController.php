@@ -177,7 +177,7 @@ public function show(Meeting $meeting)
     }
 
     /**
-     * Enviar todas las tareas a Notion
+     * Enviar todas las tareas a Notion (usando NotionService)
      */
     private function sendAllTasksToNotion(Meeting $meeting, $user)
     {
@@ -194,68 +194,153 @@ public function show(Meeting $meeting)
             return response()->json(['success' => false, 'message' => 'Base de datos de Notion no configurada'], 400);
         }
 
-        $meetingTitle = $meeting->titulo ?? 'Reunión sin título';
-        $successCount = 0;
-        $errors = [];
+        try {
+            $notionService = new NotionService($integration->token);
+            $meetingTitle = $meeting->titulo ?? 'Reunión sin título';
+            $successCount = 0;
+            $errors = [];
 
-        foreach ($meeting->tasks as $task) {
-            $payload = [
-                'parent' => ['database_id' => $databaseId],
-                'properties' => [
-                    'Tarea' => [
-                        'title' => [
-                            [
-                                'text' => [
-                                    'content' => $task->descripcion
-                                ]
-                            ]
-                        ]
-                    ],
-                    'Reunión' => [
-                        'rich_text' => [
-                            [
-                                'text' => [
-                                    'content' => $meetingTitle
-                                ]
-                            ]
-                        ]
-                    ],
-                    'Estado' => [
-                        'select' => [
-                            'name' => 'Pendiente'
-                        ]
-                    ],
-                    'Fecha' => [
-                        'date' => [
-                            'start' => now()->toDateString()
-                        ]
-                    ]
-                ]
-            ];
+            Log::info('🚀 Enviando tareas individuales a Notion', [
+                'meeting_id' => $meeting->id,
+                'total_tasks' => $meeting->tasks->count(),
+                'database_id' => $databaseId
+            ]);
 
-            $response = Http::withToken($integration->token)
-                ->withHeaders([
-                    'Notion-Version' => '2022-06-28',
-                    'Content-Type' => 'application/json'
-                ])
-                ->post('https://api.notion.com/v1/pages', $payload);
+            foreach ($meeting->tasks as $index => $task) {
+                // Para cada tarea, crear una entrada individual
+                $taskTitle = "Tarea " . ($index + 1) . ": " . substr($task->descripcion, 0, 100);
+                $taskContent = $task->descripcion;
+                
+                // Resumen mínimo para la tarea individual
+                $taskSummary = "📋 Tarea de la reunión: {$meetingTitle}";
 
-            if ($response->successful()) {
-                $successCount++;
-            } else {
-                $errors[] = "Error en tarea: " . $task->descripcion;
+                $resultado = $notionService->enviarResumenReunion(
+                    $databaseId,
+                    $taskTitle,
+                    $taskSummary,
+                    [$taskContent] // Enviar como array de una tarea
+                );
+
+                if ($resultado['success']) {
+                    $successCount++;
+                    Log::info("✅ Tarea {$index} enviada exitosamente", [
+                        'task_id' => $task->id,
+                        'page_id' => $resultado['page_id'] ?? null
+                    ]);
+                } else {
+                    $errorMsg = "Error en tarea {$index}: " . ($resultado['error'] ?? 'Error desconocido');
+                    $errors[] = $errorMsg;
+                    Log::error("❌ Error enviando tarea {$index}", [
+                        'task_id' => $task->id,
+                        'error' => $resultado['error'] ?? 'Error desconocido'
+                    ]);
+                }
+
+                // Pausa para no saturar la API de Notion
+                if ($index < $meeting->tasks->count() - 1) {
+                    usleep(300000); // 0.3 segundos entre requests
+                }
             }
 
-            // Pequeña pausa para no saturar la API
-            usleep(200000); // 0.2 segundos
+            // Devolver resultado basado en el éxito
+            if ($successCount === $meeting->tasks->count()) {
+                return response()->json([
+                    'success' => true, 
+                    'message' => "✅ Todas las {$successCount} tareas enviadas a Notion exitosamente"
+                ]);
+            } elseif ($successCount > 0) {
+                return response()->json([
+                    'success' => true, 
+                    'message' => "⚠️ Se enviaron {$successCount} de {$meeting->tasks->count()} tareas a Notion",
+                    'errors' => $errors
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false, 
+                    'message' => '❌ No se pudo enviar ninguna tarea a Notion',
+                    'errors' => $errors
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('❌ Excepción enviando tareas a Notion', [
+                'meeting_id' => $meeting->id,
+                'error' => $e->getMessage(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile()
+            ]);
+
+            return response()->json([
+                'success' => false, 
+                'message' => 'Error interno: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Alternativa: Enviar todas las tareas como UN SOLO registro en Notion
+     */
+    private function sendAllTasksToNotionAsSingle(Meeting $meeting, $user)
+    {
+        $integration = $user->integrations()->where('tipo', 'notion')->first();
+        
+        if (!$integration) {
+            return response()->json(['success' => false, 'message' => 'Integración de Notion no configurada'], 400);
         }
 
-        if ($successCount === $meeting->tasks->count()) {
-            return response()->json(['success' => true, 'message' => 'Todas las tareas enviadas a Notion']);
-        } elseif ($successCount > 0) {
-            return response()->json(['success' => true, 'message' => "Se enviaron {$successCount} de {$meeting->tasks->count()} tareas a Notion"]);
-        } else {
-            return response()->json(['success' => false, 'message' => 'Error al enviar las tareas a Notion'], 400);
+        $config = json_decode($integration->config ?? '{}', true);
+        $databaseId = $config['database_id'] ?? null;
+
+        if (!$databaseId) {
+            return response()->json(['success' => false, 'message' => 'Base de datos de Notion no configurada'], 400);
+        }
+
+        try {
+            $notionService = new NotionService($integration->token);
+            $meetingTitle = $meeting->titulo ?? 'Reunión sin título';
+            
+            // Crear array con todas las tareas
+            $allTasks = $meeting->tasks->pluck('descripcion')->toArray();
+            
+            // Resumen de la reunión
+            $resumen = $meeting->resumen ?? "Reunión procesada el " . now()->format('d/m/Y H:i');
+
+            Log::info('🚀 Enviando todas las tareas como un registro a Notion', [
+                'meeting_id' => $meeting->id,
+                'total_tasks' => count($allTasks),
+                'database_id' => $databaseId
+            ]);
+
+            $resultado = $notionService->enviarResumenReunion(
+                $databaseId,
+                $meetingTitle,
+                $resumen,
+                $allTasks
+            );
+
+            if ($resultado['success']) {
+                return response()->json([
+                    'success' => true, 
+                    'message' => "✅ Reunión con {$meeting->tasks->count()} tareas enviada a Notion",
+                    'page_id' => $resultado['page_id'] ?? null
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false, 
+                    'message' => '❌ Error enviando a Notion: ' . ($resultado['error'] ?? 'Error desconocido')
+                ], 400);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('❌ Excepción enviando reunión completa a Notion', [
+                'meeting_id' => $meeting->id,
+                'error' => $e->getMessage()
+            ]);
+
+            return response()->json([
+                'success' => false, 
+                'message' => 'Error interno: ' . $e->getMessage()
+            ], 500);
         }
     }
 

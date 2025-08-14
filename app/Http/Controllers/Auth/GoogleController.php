@@ -26,8 +26,36 @@ class GoogleController extends Controller
     }
 
     public function callback(Request $request)
-    {
-        $response = Http::asForm()->post('https://oauth2.googleapis.com/token', [
+{
+    // Verificar que tenemos el código de autorización
+    if (!$request->has('code')) {
+        \Log::error('❌ OAuth callback sin código', [
+            'request' => $request->all(),
+            'url' => $request->fullUrl()
+        ]);
+        
+        return redirect()->route('integrations.index')
+            ->with('error', 'Error en la autorización de Google. Inténtalo de nuevo.');
+    }
+
+    // Si hay error en la respuesta OAuth
+    if ($request->has('error')) {
+        \Log::error('❌ Error OAuth de Google', [
+            'error' => $request->get('error'),
+            'error_description' => $request->get('error_description')
+        ]);
+        
+        return redirect()->route('integrations.index')
+            ->with('error', 'Autorización cancelada o denegada por Google.');
+    }
+
+    try {
+        \Log::info('🔄 Intercambiando código OAuth por tokens', [
+            'code_length' => strlen($request->code),
+            'redirect_uri' => config('services.google.redirect')
+        ]);
+
+        $response = Http::timeout(30)->asForm()->post('https://oauth2.googleapis.com/token', [
             'code' => $request->code,
             'client_id' => config('services.google.client_id'),
             'client_secret' => config('services.google.client_secret'),
@@ -35,15 +63,68 @@ class GoogleController extends Controller
             'grant_type' => 'authorization_code',
         ]);
 
+        \Log::info('📡 Respuesta de Google OAuth', [
+            'status' => $response->status(),
+            'successful' => $response->successful(),
+            'body_preview' => substr($response->body(), 0, 200)
+        ]);
+
+        if (!$response->successful()) {
+            \Log::error('❌ Error HTTP en intercambio de tokens', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            
+            return redirect()->route('integrations.index')
+                ->with('error', 'Error comunicándose con Google. Código HTTP: ' . $response->status());
+        }
+
         $data = $response->json();
 
-        // Mostrar para confirmar guardado
+        // Verificar que tenemos los datos necesarios
+        if (!isset($data['access_token'])) {
+            \Log::error('❌ Respuesta de Google sin access_token', [
+                'response_data' => $data
+            ]);
+            
+            $errorMsg = 'Google no devolvió un token de acceso válido.';
+            if (isset($data['error'])) {
+                $errorMsg .= ' Error: ' . $data['error'];
+                if (isset($data['error_description'])) {
+                    $errorMsg .= ' - ' . $data['error_description'];
+                }
+            }
+            
+            return redirect()->route('integrations.index')->with('error', $errorMsg);
+        }
+
+        \Log::info('✅ Tokens recibidos correctamente', [
+            'has_access_token' => !empty($data['access_token']),
+            'has_refresh_token' => !empty($data['refresh_token']),
+            'expires_in' => $data['expires_in'] ?? 'No especificado',
+            'token_type' => $data['token_type'] ?? 'No especificado',
+            'scope' => $data['scope'] ?? 'No especificado'
+        ]);
+
+        // Mostrar vista de confirmación
         return view('oauth.google.confirm', [
             'access_token' => $data['access_token'],
             'refresh_token' => $data['refresh_token'] ?? null,
-            'expires_in' => $data['expires_in'],
+            'expires_in' => $data['expires_in'] ?? 3600,
+            'scope' => $data['scope'] ?? 'No especificado'
         ]);
+
+    } catch (\Exception $e) {
+        \Log::error('❌ Excepción en callback OAuth', [
+            'error' => $e->getMessage(),
+            'line' => $e->getLine(),
+            'file' => $e->getFile()
+        ]);
+        
+        return redirect()->route('integrations.index')
+            ->with('error', 'Error interno procesando la autorización de Google.');
     }
+}
 
     public function store(Request $request)
 {

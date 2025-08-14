@@ -14,8 +14,7 @@
                 <div class="hidden md:flex items-center space-x-4">
                     <div class="text-right">
                         <p class="text-sm text-gray-400">Hoy es</p>
-                        <p class="font-medium text-white">{{ now()->format('d M Y') }}</p>
-                    </div>
+<p class="font-medium text-white">{{ now()->locale('es')->translatedFormat('d M Y') }}</p>                    </div>
                 </div>
             </div>
         </div>
