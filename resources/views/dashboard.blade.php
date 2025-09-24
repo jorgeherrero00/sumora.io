@@ -14,7 +14,7 @@
                 <div class="hidden md:flex items-center space-x-4">
                     <div class="text-right">
                         <p class="text-sm text-gray-400">Hoy es</p>
-<p class="font-medium text-white">{{ now()->locale('es')->translatedFormat('d M Y') }}</p>                    </div>
+                        <p class="font-medium text-white">{{ now()->locale('es')->translatedFormat('d M Y') }}</p>                    </div>
                 </div>
             </div>
         </div>
@@ -40,28 +40,6 @@
                     </span>
                 </div>
             </div>
-
-            <!-- Tareas Pendientes -->
-<!--             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-gray-400 text-sm">Tareas Pendientes</p>
-                        <p class="text-2xl font-bold text-white">
-                            {{ auth()->user()->meetings()->with('tasks')->get()->pluck('tasks')->flatten()->where('completada', false)->count() }}
-                        </p>
-                    </div>
-                    <div class="bg-blue-500/20 p-3 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                        </svg>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <span class="text-orange-400 text-sm">
-                        {{ auth()->user()->meetings()->with('tasks')->get()->pluck('tasks')->flatten()->where('completada', true)->count() }} completadas
-                    </span>
-                </div>
-            </div> -->
 
             <!-- Tiempo Transcrito -->
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
@@ -100,47 +78,18 @@
                     <span class="text-green-400 text-sm">98% precisión promedio</span>
                 </div>
             </div>
-        </div>
-
-        <!-- Acciones Rápidas -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <!-- Nueva Reunión -->
-            <div class="lg:col-span-2">
-                <div class="bg-gradient-to-br from-orange-500/10 to-red-500/10 border border-orange-500/20 rounded-xl p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xl font-semibold text-white">Subir Nueva Reunión</h3>
-                        <div class="bg-orange-500/20 p-2 rounded-lg">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                            </svg>
-                        </div>
-                    </div>
-                    <p class="text-gray-300 mb-4">Arrastra tu archivo de audio o video aquí, o haz clic para seleccionar</p>
-                    <div class="flex gap-3">
-                        <a href="{{ route('reuniones.index') }}" class="flex-1 bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 px-4 rounded-lg font-medium text-center transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                            Ir a Reuniones
-                        </a>
-                        <button class="bg-gray-700/50 hover:bg-gray-700 text-gray-300 py-3 px-4 rounded-lg transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
 
             <!-- Tu Token API -->
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xl font-semibold text-white">Tu Token API</h3>
+                    <h3 class="text-lg font-semibold text-white">Tu Token API</h3>
                     <div class="bg-blue-500/20 p-2 rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="15 7a2 2 0 012 2m0 0a2 2 0 012 2m-2-2a2 2 0 00-2 2m2-2a2 2 0 002 2M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                 </div>
-                <p class="text-gray-300 text-sm mb-4">Para usar con extensiones o aplicaciones</p>
+                <p class="text-gray-300 text-sm mb-4">Para usar con la extensión oficial de Syntal</p>
                 <div class="bg-gray-900/50 p-3 rounded-lg border border-gray-700 mb-4">
                     <code class="text-orange-400 text-sm break-all">
                         {{ auth()->user()->api_token ?? 'Token no generado' }}
@@ -152,164 +101,513 @@
             </div>
         </div>
 
-        <!-- Reuniones Recientes y Tareas -->
-        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8">
-            <!-- Reuniones Recientes -->
-            <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-semibold text-white">Reuniones Recientes</h3>
-                    <a href="{{ route('reuniones.index') }}" class="text-orange-400 hover:text-orange-300 text-sm flex items-center">
-                        Ver todas
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
-                    </a>
-                </div>
-
-                <div class="space-y-4">
-                    @forelse(auth()->user()->meetings()->latest()->limit(4)->get() as $reunion)
-                    <div class="bg-gray-700/30 rounded-lg p-4 hover:bg-gray-700/50 transition-colors">
-                        <div class="flex items-start justify-between">
-                            <div class="flex-1">
-                                <h4 class="font-medium text-white mb-1">{{ $reunion->titulo ?? 'Sin título' }}</h4>
-                                <div class="flex items-center text-sm text-gray-400 space-x-4">
-                                    <span>{{ $reunion->created_at->format('j M') }}</span>
-                                    <span class="flex items-center">
-                                        <span class="inline-block w-2 h-2 bg-{{ $reunion->resumen ? 'green' : 'orange' }}-400 rounded-full mr-1"></span>
-                                        {{ $reunion->resumen ? 'Procesado' : 'Procesando...' }}
-                                    </span>
-                                </div>
-                                @if($reunion->resumen)
-                                <p class="text-gray-300 text-sm mt-2 line-clamp-2">{{ Str::limit($reunion->resumen, 100) }}</p>
-                                @endif
-                            </div>
-                            <div class="ml-4 flex space-x-2">
-                                <button class="p-2 text-gray-400 hover:text-white transition-colors">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
+        <!-- Zona de Drag & Drop - Destacada -->
+        <div class="mb-8">
+            <form id="uploadForm" action="{{ route('reuniones.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                
+                <!-- Drag & Drop Zone -->
+                <div id="dropZone" class="relative bg-gradient-to-br from-orange-500/10 to-red-500/10 border-2 border-dashed border-orange-500/30 rounded-xl p-8 transition-all duration-300 hover:border-orange-500/50 hover:bg-gradient-to-br hover:from-orange-500/15 hover:to-red-500/15 cursor-pointer group">
+                    
+                    <!-- Loading Overlay -->
+                    <div id="uploadOverlay" class="absolute inset-0 bg-gray-900/90 backdrop-blur-sm rounded-xl hidden items-center justify-center z-10">
+                        <div class="text-center">
+                            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto mb-4"></div>
+                            <p class="text-white font-medium">Subiendo archivo...</p>
+                            <p class="text-gray-400 text-sm mt-1">Esto puede tardar unos momentos</p>
                         </div>
                     </div>
-                    @empty
-                    <div class="text-center py-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
-                        <p class="text-gray-400">No tienes reuniones todavía</p>
-                        <p class="text-sm text-gray-500 mt-1">Sube tu primera reunión para empezar</p>
+
+                    <!-- Drag Over Overlay -->
+                    <div id="dragOverlay" class="absolute inset-0 bg-orange-500/20 backdrop-blur-sm rounded-xl hidden items-center justify-center border-2 border-orange-500 border-dashed">
+                        <div class="text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-orange-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 12l3 3m0 0l3-3m0 0V9" />
+                            </svg>
+                            <p class="text-white text-xl font-semibold">¡Suelta aquí tu archivo!</p>
+                            <p class="text-orange-200 text-sm mt-1">Archivo de audio o video</p>
+                        </div>
                     </div>
-                    @endforelse
-                </div>
-            </div>
 
-            <!-- Tareas Pendientes -->
-<!--             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-semibold text-white">Tareas Pendientes</h3>
-                    <span class="bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs">
-                        {{ auth()->user()->meetings()->with('tasks')->get()->pluck('tasks')->flatten()->where('completada', false)->count() }} pendientes
-                    </span>
-                </div>
+                    <!-- Default Content -->
+                    <div id="defaultContent" class="text-center">
+                        <div class="bg-orange-500/20 p-4 rounded-full inline-block mb-6 group-hover:bg-orange-500/30 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                        </div>
+                        
+                        <h3 class="text-2xl font-bold text-white mb-2">Sube tu reunión</h3>
+                        <p class="text-gray-300 mb-4">Arrastra tu archivo de audio o video aquí, o haz clic para seleccionar</p>
+                        
+                        <div class="flex flex-wrap justify-center gap-2 mb-6">
+                            <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">MP3</span>
+                            <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">WAV</span>
+                            <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">MP4</span>
+                            <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">MOV</span>
+                            <span class="px-3 py-1 bg-gray-700/50 text-gray-300 text-xs rounded-full">WEBM</span>
+                        </div>
 
-                <div class="space-y-3">
-                    @php
-                        $tareas = auth()->user()->meetings()->with('tasks')->get()->pluck('tasks')->flatten()->where('completada', false)->take(5);
-                    @endphp
-                    
-                    @forelse($tareas as $tarea)
-                    <div class="flex items-start space-x-3 p-3 bg-gray-700/30 rounded-lg hover:bg-gray-700/50 transition-colors">
-                        <input type="checkbox" class="mt-1 w-4 h-4 text-orange-500 border-gray-600 rounded focus:ring-orange-500 focus:ring-2">
-                        <div class="flex-1">
-                            <p class="text-white text-sm">{{ $tarea->descripcion }}</p>
-                            <p class="text-gray-400 text-xs mt-1">
-                                De: {{ $tarea->meeting->titulo ?? 'Reunión sin título' }}
+                        <button type="button" onclick="document.getElementById('fileInput').click()" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium rounded-lg hover:-translate-y-0.5 hover:shadow-lg transition-all duration-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                            </svg>
+                            Seleccionar archivo
+                        </button>
+                    </div>
+
+                    <!-- File Selected Content -->
+                    <div id="fileSelectedContent" class="text-center hidden">
+                        <div class="bg-green-500/20 p-4 rounded-full inline-block mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">¡Archivo listo!</h3>
+                        <p id="fileName" class="text-gray-300 mb-1"></p>
+                        <p id="fileSize" class="text-gray-400 text-sm mb-6"></p>
+                        
+                        <!-- Campo de título integrado elegantemente -->
+                        <div class="max-w-md mx-auto mb-6">
+                            <div class="relative">
+                                <input type="text" name="titulo" id="titulo" required
+                                       placeholder="Ponle un nombre a esta reunión..." 
+                                       class="w-full bg-gray-800/70 border-2 border-gray-600/50 rounded-xl py-4 px-6 text-white text-center text-lg placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500 transition-all duration-300 focus:bg-gray-800/90">
+                                <div class="absolute inset-0 bg-gradient-to-r from-orange-500/5 to-red-500/5 rounded-xl pointer-events-none opacity-0 transition-opacity duration-300" id="titleGlow"></div>
+                            </div>
+                            <p class="text-gray-500 text-xs mt-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Ej: "Reunión equipo marketing", "Daily standup 24 Sep"
                             </p>
                         </div>
+
+                     
+                        
+                        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                            <button type="submit" class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold text-lg rounded-xl hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/20 transition-all duration-300 group">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 group-hover:scale-110 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                </svg>
+                                Procesar con IA
+                            </button>
+                            <button type="button" onclick="resetUpload()" class="inline-flex items-center px-6 py-4 bg-gray-700/50 hover:bg-gray-700 text-gray-300 hover:text-white font-medium rounded-xl transition-all duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Cambiar archivo
+                            </button>
+                        </div>
                     </div>
-                    @empty
-                    <div class="text-center py-8">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <p class="text-gray-400">¡No tienes tareas pendientes!</p>
-                        <p class="text-sm text-gray-500 mt-1">Todas las tareas están completadas</p>
-                    </div>
-                    @endforelse
+
+                    <!-- Hidden file input -->
+                    <input type="file" id="fileInput" name="archivo" accept=".mp3,.wav,.m4a,.mp4,.mov,.avi,.webm" class="hidden" required>
                 </div>
 
-                @if($tareas->count() > 0)
-                <div class="mt-6 pt-4 border-t border-gray-700">
-                    <button class="w-full text-center text-orange-400 hover:text-orange-300 text-sm font-medium">
-                        Ver todas las tareas
-                    </button>
-                </div>
-                @endif
-            </div> -->
+                <!-- Opciones adicionales -->
+                <!-- Las opciones adicionales ahora están integradas en fileSelectedContent -->
+            </form>
         </div>
 
-        <!-- Integraciones Rápidas -->
-        <!-- <div class="mt-8">
+        <!-- Acciones Rápidas -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-semibold text-white">Conecta tus herramientas</h3>
-                    <a href="{{ route('integrations.index') }}" class="text-orange-400 hover:text-orange-300 text-sm">Gestionar</a>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-semibold text-white">Acciones rápidas</h3>
                 </div>
-
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <button class="p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg transition-colors text-center group">
-                        <div class="bg-orange-500/20 p-3 rounded-lg inline-block mb-2 group-hover:bg-orange-500/30 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466l1.823 1.447zm1.775 2.055c.187.466.187.886.187 1.727v13.775c0 .746.373 1.027 1.213 1.027.933 0 1.353-.28 1.727-1.12l7.318-11.85c.14-.186.047-.373-.094-.373l-3.896.7c-.28.047-.327.234-.187.42l4.734 7.318c.047.047.047.094.047.187v-1.727l-4.734-7.318c-.094-.14-.14-.326-.047-.514l.886-1.96c.187-.466.047-.98-.42-1.12L4.696 3.628c-.42-.14-.933 0-1.12.42l-.374.793c-.14.326-.28.7-.28 1.213L3.01 6.24c0 .466.28.653.653.653h2.147c.326-.047.42-.28.42-.606zm6.638 2.568c.187-.14.467-.047.653.093l1.12.84c.187.187.187.33.187.514v.046l-1.214 1.68-1.493-1.40c-.094-.187-.094-.33-.047-.514l.794-1.26zm-3.57 11.664c-.14.187-.047.373.094.467l1.214.84c.187.14.373.094.513-.047l2.708-3.734V8.954l-1.214 1.826-3.316 4.56z"/>
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="{{ route('reuniones.index') }}" class="flex flex-col items-center p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg transition-colors group">
+                        <div class="bg-orange-500/20 p-3 rounded-lg mb-2 group-hover:bg-orange-500/30 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
                         </div>
-                        <p class="text-white text-sm font-medium">Notion</p>
-                        <p class="text-gray-400 text-xs">Conectar</p>
-                    </button>
-
-                    <button class="p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg transition-colors text-center group">
-                        <div class="bg-green-500/20 p-3 rounded-lg inline-block mb-2 group-hover:bg-green-500/30 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M19.993 8.448c-.006-.12-.012-.24-.018-.358H8v5.01h7.34c-.305 1.59-1.533 2.962-3.296 3.638v3.033h5.35c3.12-2.867 4.917-7.08 4.917-12.03 0-1.131-.099-2.242-.29-3.323z" fill="#4285F4"/>
-                                <path d="M8 21c4.468 0 8.223-1.456 10.957-3.933l-5.35-3.027c-1.48.995-3.38 1.585-5.607 1.585-4.295 0-7.934-2.898-9.235-6.8H-6.58v3.127C-3.825 17.735 1.816 21 8 21z" fill="#34A853"/>
-                            </svg>
-                        </div>
-                        <p class="text-white text-sm font-medium">Google Sheets</p>
-                        <p class="text-gray-400 text-xs">Conectar</p>
-                    </button>
-
-                    <button class="p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg transition-colors text-center group">
-                        <div class="bg-purple-500/20 p-3 rounded-lg inline-block mb-2 group-hover:bg-purple-500/30 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-400" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/>
-                            </svg>
-                        </div>
-                        <p class="text-white text-sm font-medium">Slack</p>
-                        <p class="text-gray-400 text-xs">Conectar</p>
-                    </button>
-
-                    <button class="p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg transition-colors text-center group">
-                        <div class="bg-blue-500/20 p-3 rounded-lg inline-block mb-2 group-hover:bg-blue-500/30 transition-colors">
+                        <span class="text-white text-sm font-medium text-center">Ver todas las reuniones</span>
+                    </a>
+                    
+                    <a href="{{ route('integrations.index') }}" class="flex flex-col items-center p-4 bg-gray-700/30 hover:bg-gray-700/50 rounded-lg transition-colors group">
+                        <div class="bg-blue-500/20 p-3 rounded-lg mb-2 group-hover:bg-blue-500/30 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <p class="text-white text-sm font-medium">Más</p>
-                        <p class="text-gray-400 text-xs">Explorar</p>
-                    </button>
+                        <span class="text-white text-sm font-medium text-center">Configurar integraciones</span>
+                    </a>
                 </div>
             </div>
-        </div> -->
+
+            <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+                <h3 class="text-xl font-semibold text-white mb-4">Consejos para mejores resultados</h3>
+                <div class="space-y-3">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-green-500/20 p-1 rounded-full mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <p class="text-gray-300 text-sm">Audio claro y sin ruido de fondo</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-green-500/20 p-1 rounded-full mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <p class="text-gray-300 text-sm">Mencionar nombres de participantes</p>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-green-500/20 p-1 rounded-full mt-0.5">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <p class="text-gray-300 text-sm">Definir tareas y responsabilidades claramente</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reuniones Recientes -->
+        <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold text-white">Reuniones Recientes</h3>
+                <a href="{{ route('reuniones.index') }}" class="text-orange-400 hover:text-orange-300 text-sm flex items-center">
+                    Ver todas
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+
+            <div class="space-y-4">
+                @forelse(auth()->user()->meetings()->latest()->limit(4)->get() as $reunion)
+                <div class="bg-gray-700/30 rounded-lg p-4 hover:bg-gray-700/50 transition-colors">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <h4 class="font-medium text-white mb-1">{{ $reunion->titulo ?? 'Sin título' }}</h4>
+                            <div class="flex items-center text-sm text-gray-400 space-x-4">
+                                <span>{{ $reunion->created_at->format('j M') }}</span>
+                                <span class="flex items-center">
+                                    <span class="inline-block w-2 h-2 bg-{{ $reunion->resumen ? 'green' : 'orange' }}-400 rounded-full mr-1"></span>
+                                    {{ $reunion->resumen ? 'Procesado' : 'Procesando...' }}
+                                </span>
+                            </div>
+                            @if($reunion->resumen)
+                            <p class="text-gray-300 text-sm mt-2 line-clamp-2">{{ Str::limit($reunion->resumen, 100) }}</p>
+                            @endif
+                        </div>
+                        <div class="ml-4 flex space-x-2">
+                            <a href="{{ route('reuniones.show', $reunion) }}" class="p-2 text-gray-400 hover:text-white transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                <div class="text-center py-8">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                    <p class="text-gray-400">No tienes reuniones todavía</p>
+                    <p class="text-sm text-gray-500 mt-1">Sube tu primera reunión para empezar</p>
+                </div>
+                @endforelse
+            </div>
+        </div>
     </div>
 
     <script>
+        // Elementos del DOM
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const uploadForm = document.getElementById('uploadForm');
+        const dragOverlay = document.getElementById('dragOverlay');
+        const uploadOverlay = document.getElementById('uploadOverlay');
+        const defaultContent = document.getElementById('defaultContent');
+        const fileSelectedContent = document.getElementById('fileSelectedContent');
+        const additionalOptions = document.getElementById('additionalOptions');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+
+        // Formatos permitidos
+        const allowedTypes = ['audio/mp3', 'audio/wav', 'audio/m4a', 'video/mp4', 'video/mov', 'video/avi', 'video/webm'];
+
+        // Prevenir comportamiento por defecto del navegador
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Eventos de drag and drop
+        dropZone.addEventListener('dragenter', handleDragEnter);
+        dropZone.addEventListener('dragover', handleDragOver);
+        dropZone.addEventListener('dragleave', handleDragLeave);
+        dropZone.addEventListener('drop', handleDrop);
+
+        // Evento de clic para abrir selector
+        dropZone.addEventListener('click', () => {
+            if (!fileInput.files.length) {
+                fileInput.click();
+            }
+        });
+
+        // Evento cuando se selecciona archivo
+        fileInput.addEventListener('change', handleFileSelect);
+
+        function handleDragEnter(e) {
+            dropZone.classList.add('border-orange-500');
+            dragOverlay.classList.remove('hidden');
+            dragOverlay.classList.add('flex');
+        }
+
+        function handleDragOver(e) {
+            e.dataTransfer.dropEffect = 'copy';
+        }
+
+        function handleDragLeave(e) {
+            // Solo ocultar si realmente salimos del dropZone
+            if (!dropZone.contains(e.relatedTarget)) {
+                dropZone.classList.remove('border-orange-500');
+                dragOverlay.classList.add('hidden');
+                dragOverlay.classList.remove('flex');
+            }
+        }
+
+        function handleDrop(e) {
+            dropZone.classList.remove('border-orange-500');
+            dragOverlay.classList.add('hidden');
+            dragOverlay.classList.remove('flex');
+
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                const file = files[0];
+                if (isValidFile(file)) {
+                    fileInput.files = files;
+                    displaySelectedFile(file);
+                } else {
+                    showError('Tipo de archivo no válido. Solo se permiten archivos de audio y video.');
+                }
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file && isValidFile(file)) {
+                displaySelectedFile(file);
+            } else if (file) {
+                showError('Tipo de archivo no válido. Solo se permiten archivos de audio y video.');
+                resetUpload();
+            }
+        }
+
+        function isValidFile(file) {
+            // Verificar por tipo MIME y extensión
+            const validMimeTypes = [
+                'audio/mp3', 'audio/mpeg', 'audio/wav', 'audio/m4a',
+                'video/mp4', 'video/mov', 'video/avi', 'video/webm'
+            ];
+            
+            const validExtensions = ['mp3', 'wav', 'm4a', 'mp4', 'mov', 'avi', 'webm'];
+            const fileExtension = file.name.split('.').pop().toLowerCase();
+            
+            return validMimeTypes.includes(file.type) || validExtensions.includes(fileExtension);
+        }
+
+        function displaySelectedFile(file) {
+            defaultContent.classList.add('hidden');
+            fileSelectedContent.classList.remove('hidden');
+            
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            
+            // Cambiar el estilo del dropZone
+            dropZone.classList.add('border-green-500/50', 'bg-green-500/5');
+            dropZone.classList.remove('border-orange-500/30');
+            
+            // Enfocar el campo de título después de un breve delay
+            setTimeout(() => {
+                const tituloField = document.getElementById('titulo');
+                tituloField.focus();
+                
+                // Añadir efecto de brillo al enfocar
+                tituloField.addEventListener('focus', () => {
+                    document.getElementById('titleGlow').style.opacity = '1';
+                });
+                
+                tituloField.addEventListener('blur', () => {
+                    document.getElementById('titleGlow').style.opacity = '0';
+                });
+            }, 300);
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function resetUpload() {
+            fileInput.value = '';
+            defaultContent.classList.remove('hidden');
+            fileSelectedContent.classList.add('hidden');
+            
+            // Resetear estilos
+            dropZone.classList.remove('border-green-500/50', 'bg-green-500/5');
+            dropZone.classList.add('border-orange-500/30');
+            
+            // Limpiar campos
+            document.getElementById('titulo').value = '';
+            document.querySelector('input[name="enviar_google_sheets"]').checked = false;
+        }
+
+        function showError(message) {
+            // Aquí puedes implementar tu sistema de notificaciones
+            // Por ahora usamos un alert simple
+            alert('Error: ' + message);
+        }
+
+        function showSuccess(message) {
+            // Aquí puedes implementar tu sistema de notificaciones
+            alert('Éxito: ' + message);
+        }
+
+        // Manejar envío del formulario
+        uploadForm.addEventListener('submit', function(e) {
+            if (!fileInput.files.length) {
+                e.preventDefault();
+                showError('Por favor selecciona un archivo primero.');
+                return;
+            }
+
+            // Validar que el título no esté vacío
+            const tituloField = document.getElementById('titulo');
+            if (!tituloField.value.trim()) {
+                e.preventDefault();
+                
+                // Destacar el campo vacío
+                tituloField.classList.add('border-red-500', 'bg-red-500/10');
+                tituloField.focus();
+                
+                // Shake animation
+                tituloField.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    tituloField.style.animation = '';
+                }, 500);
+                
+                showError('Por favor, ponle un nombre a la reunión.');
+                
+                // Quitar estilos de error después de que el usuario empiece a escribir
+                tituloField.addEventListener('input', function() {
+                    this.classList.remove('border-red-500', 'bg-red-500/10');
+                }, { once: true });
+                
+                return;
+            }
+
+            // Mostrar overlay de carga
+            uploadOverlay.classList.remove('hidden');
+            uploadOverlay.classList.add('flex');
+            
+            // Deshabilitar el botón de envío
+            const submitButton = uploadForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<svg class="animate-spin h-6 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Procesando con IA...';
+        });
+
+        // Función para copiar token
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(function() {
-                // Podrías mostrar una notificación aquí
-                alert('Token copiado al portapapeles!');
+                showSuccess('Token copiado al portapapeles!');
+            }, function(err) {
+                showError('No se pudo copiar el token: ' + err);
             });
         }
+
+        // Validación de tamaño de archivo
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Límite de 100MB
+                const maxSize = 100 * 1024 * 1024; // 100MB en bytes
+                if (file.size > maxSize) {
+                    showError('El archivo es demasiado grande. El tamaño máximo permitido es 100MB.');
+                    resetUpload();
+                    return;
+                }
+            }
+        });
+
+        // Mostrar alertas de éxito/error desde Laravel
+        @if (session('success'))
+            showSuccess('{{ session('success') }}');
+        @endif
+
+        @if ($errors->any())
+            showError('{{ implode(" ", $errors->all()) }}');
+        @endif
     </script>
+
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        /* Animaciones adicionales */
+        #dropZone {
+            transition: all 0.3s ease;
+        }
+        
+        #dropZone:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Loading spinner personalizado */
+        @keyframes pulse-orange {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: .5;
+            }
+        }
+        
+        .animate-pulse-orange {
+            animation: pulse-orange 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        /* Shake animation para campos de error */
+        @keyframes shake {
+            0%, 20%, 40%, 60%, 80% {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-10px);
+            }
+        }
+        
+        /* Smooth transitions para el título */
+        #titulo {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        #titulo:focus {
+            transform: scale(1.02);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.2);
+        }
+    </style>
 @endsection

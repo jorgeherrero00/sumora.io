@@ -109,7 +109,7 @@
                         <p class="text-xs text-gray-500">Google Sheets</p>
                     @else
                         <p class="text-lg font-semibold text-white">Local</p>
-                        <p class="text-xs text-gray-500">Solo en Sumora</p>
+                        <p class="text-xs text-gray-500">Solo en Syntal</p>
                     @endif
                 </div>
                 <div class="{{ $meeting->guardar_en_google_sheets ? 'text-green-500' : 'text-gray-500' }}">
@@ -493,7 +493,7 @@ function shareReunion() {
     if (navigator.share) {
         navigator.share({
             title: '{{ $meeting->titulo ?? "Reunión" }}',
-            text: 'Resumen de reunión generado por Sumora',
+            text: 'Resumen de reunión generado por Syntal',
             url: url
         });
     } else {

@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Sumora | Transforma tus reuniones</title>
+    <title>Syntal | Transforma tus reuniones</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -155,7 +155,7 @@
         </h1>
         
         <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed">
-            Sumora analiza tus conversaciones, genera resúmenes inteligentes y extrae las acciones clave para maximizar tu productividad.
+            Syntal analiza tus conversaciones, genera resúmenes inteligentes y extrae las acciones clave para maximizar tu productividad.
         </p>
         
         <div class="flex flex-col sm:flex-row justify-center gap-6 mb-16">
@@ -196,7 +196,7 @@
     <div class="max-w-6xl mx-auto relative">
         <!-- Main app interface preview -->
         <div class="rounded-3xl shadow-2xl border border-gray-700/50 overflow-hidden bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-xl transform transition-transform hover:scale-[1.01] duration-500">
-            <img src="/img/ui-preview.png" alt="Vista previa de la interfaz" class="w-full object-cover" onerror="this.src='https://placehold.co/1200x600/1f1f23/orange?text=Sumora+Interface'">
+            <img src="/img/ui-preview.png" alt="Vista previa de la interfaz" class="w-full object-cover" onerror="this.src='https://placehold.co/1200x600/1f1f23/orange?text=Syntal+Interface'">
         </div>       
         
         <div class="absolute -bottom-8 right-10 transform rotate-[3deg] bg-orange-500 rounded-lg shadow-xl p-3 w-48 hidden md:block">
@@ -537,7 +537,7 @@
         </div>
         
         <h2 class="text-4xl md:text-5xl font-extrabold mb-6 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Transforma tus reuniones hoy</h2>
-        <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">Únete a miles de profesionales que ahorran tiempo y aumentan su productividad con Sumora.</p>
+        <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto">Únete a miles de profesionales que ahorran tiempo y aumentan su productividad con Syntal.</p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="#signup" class="relative overflow-hidden group px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-lg shadow-xl shadow-orange-500/20 transform transition-all duration-300 hover:-translate-y-1">
@@ -583,7 +583,7 @@
         <div class="text-center mb-16">
             <div class="inline-block bg-orange-500/20 text-orange-300 px-3 py-1 rounded-full uppercase text-xs tracking-wider mb-4">Dudas</div>
             <h2 class="text-4xl md:text-5xl font-bold mb-6">Preguntas <span class="bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">frecuentes</span></h2>
-            <p class="text-gray-400 max-w-2xl mx-auto">Todo lo que necesitas saber sobre cómo Sumora puede transformar tus reuniones</p>
+            <p class="text-gray-400 max-w-2xl mx-auto">Todo lo que necesitas saber sobre cómo Syntal puede transformar tus reuniones</p>
         </div>
         
         <div class="space-y-5">
@@ -598,7 +598,7 @@
                     content.classList.toggle('py-6');
                     icon.classList.toggle('rotate-45');
                 ">
-                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Cómo empiezo a usar Sumora?</span>
+                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Cómo empiezo a usar Syntal?</span>
                     <span class="text-orange-500 h-6 w-6 flex items-center justify-center transition-transform duration-300 faq-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -685,7 +685,7 @@
                 </button>
                 <div class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out border-t border-gray-700/50 px-6 py-0">
                     <p class="text-gray-300">
-                        Sumora ofrece múltiples opciones para recibir tus resúmenes, según tus preferencias:
+                        Syntal ofrece múltiples opciones para recibir tus resúmenes, según tus preferencias:
                     </p>
                     <div class="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div class="flex items-center gap-2 bg-gray-700/30 rounded-lg p-3">
@@ -728,7 +728,7 @@
                     content.classList.toggle('py-6');
                     icon.classList.toggle('rotate-45');
                 ">
-                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Qué idiomas soporta Sumora?</span>
+                    <span class="font-semibold text-xl text-white group-hover:text-orange-400 transition-colors">¿Qué idiomas soporta Syntal?</span>
                     <span class="text-orange-500 h-6 w-6 flex items-center justify-center transition-transform duration-300 faq-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -737,7 +737,7 @@
                 </button>
                 <div class="max-h-0 overflow-hidden transition-all duration-500 ease-in-out border-t border-gray-700/50 px-6 py-0">
                     <p class="text-gray-300">
-                        Actualmente Sumora soporta español, inglés, francés, alemán, italiano y portugués. Estamos trabajando continuamente para añadir más idiomas a nuestra plataforma.
+                        Actualmente Syntal soporta español, inglés, francés, alemán, italiano y portugués. Estamos trabajando continuamente para añadir más idiomas a nuestra plataforma.
                     </p>
                     <div class="mt-4 flex flex-wrap gap-2">
                         <span class="bg-gray-700/50 px-3 py-1 rounded-full text-xs text-gray-300">Español</span>
@@ -766,7 +766,7 @@
 
   <!-- Footer -->
   <footer class="py-12 px-6 text-center text-gray-500 text-sm border-t border-gray-800">
-    <p>&copy; 2025 Sumora.io — Todos los derechos reservados</p>
+    <p>&copy; 2025 Syntal.io — Todos los derechos reservados</p>
   </footer>
 </body>
 

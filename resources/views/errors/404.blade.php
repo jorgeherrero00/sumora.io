@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>404 - Página no encontrada | Sumora</title>
+    <title>404 - Página no encontrada | Syntal</title>
     
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
@@ -93,7 +93,7 @@
             <div class="relative">
                 <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full blur-md opacity-70 animate-pulse"></div>
                 <div class="relative text-3xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 text-transparent bg-clip-text">
-                    Sumora
+                    Syntal
                 </div>
             </div>
         </div>
@@ -159,7 +159,7 @@
 
     <!-- Error code for debugging (hidden) -->
     <div class="fixed bottom-4 right-4 text-xs text-gray-600">
-        ERROR_404_Sumora
+        ERROR_404_Syntal
     </div>
 </body>
 </html>

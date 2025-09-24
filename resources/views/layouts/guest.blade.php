@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <title>{{ config('app.name', 'Sumora') }}</title>
+    <title>{{ config('app.name', 'Syntal') }}</title>
 
     <!-- Fonts & Styles -->
     <link rel="preconnect" href="https://fonts.bunny.net" />
@@ -25,7 +25,8 @@
 <body class="bg-[#0a0a0f] text-white font-sans antialiased">
     <div class="min-h-screen flex flex-col justify-center items-center px-6 sm:px-0">
         <div class="text-3xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 text-transparent bg-clip-text mb-6">
-            Sumora
+            <img src="/logos/logo.png" alt="{{ config('app.name', 'Syntal') }}" class="h-10 inline-block mr-2" />
+            {{ config('app.name', 'Syntal') }}
         </div>
 
         <div class="w-full sm:max-w-md  backdrop-blur-md  shadow-xl rounded-xl p-8">

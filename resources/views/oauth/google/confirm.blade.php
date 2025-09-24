@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Conectar con Google Sheets - Sumora</title>
+    <title>Conectar con Google Sheets - Syntal</title>
     
     <!-- Fonts & Styles -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -74,7 +74,7 @@
             <div class="inline-flex items-center space-x-2 mb-6">
                 <div class="relative">
                     <div class="absolute -inset-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full blur-md opacity-70 animate-pulse"></div>
-                    <div class="relative text-2xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 text-transparent bg-clip-text">Sumora</div>
+                    <div class="relative text-2xl font-extrabold bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 text-transparent bg-clip-text">Syntal</div>
                 </div>
             </div>
         </div>

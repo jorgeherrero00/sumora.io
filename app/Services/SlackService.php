@@ -37,7 +37,7 @@ class SlackService
                 }
             }
 
-            $mensaje .= "\n_Generado automáticamente por Sumora_ ⚡";
+            $mensaje .= "\n_Generado automáticamente por Syntal_ ⚡";
 
             $payload = [
                 'channel' => $canal,
@@ -82,7 +82,7 @@ class SlackService
                 'elements' => [
                     [
                         'type' => 'mrkdwn',
-                        'text' => "_Generado automáticamente por Sumora_ ⚡"
+                        'text' => "_Generado automáticamente por Syntal_ ⚡"
                     ]
                 ]
             ];

@@ -65,7 +65,7 @@ class TestIntegrationController extends Controller
         $resultado = $notion->enviarResumenReunion(
             $databaseId,
             '🧪 Prueba de integración - ' . now()->format('Y-m-d H:i'),
-            'Esta es una prueba automática de la integración con Notion desde Sumora.',
+            'Esta es una prueba automática de la integración con Notion desde Syntal.',
             ['Verificar que la integración funciona correctamente', 'Configurar base de datos si es necesario']
         );
 
@@ -156,9 +156,9 @@ public function testSlack(Request $request)
         // Paso 3: Intentar enviar mensaje de prueba
         $payload = [
             'channel' => $canal,
-            'text' => '🧪 Prueba de integración desde Sumora - ' . now()->format('H:i:s'),
+            'text' => '🧪 Prueba de integración desde Syntal - ' . now()->format('H:i:s'),
             'as_user' => false,
-            'username' => 'Sumora',
+            'username' => 'Syntal',
             'icon_emoji' => ':robot_face:'
         ];
 
@@ -329,7 +329,7 @@ private function getSuggestions($error, $availableChannels)
                 $spreadsheetId,
                 $sheetName,
                 '🧪 Prueba de integración - ' . now()->format('Y-m-d H:i'),
-                'Esta es una prueba automática de la integración con Google Sheets desde Sumora.',
+                'Esta es una prueba automática de la integración con Google Sheets desde Syntal.',
                 ['Verificar que la integración funciona correctamente', 'Configurar hoja si es necesario']
             );
 
