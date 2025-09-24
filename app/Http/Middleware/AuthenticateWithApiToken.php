@@ -14,6 +14,7 @@ class AuthenticateWithApiToken
     return response()->json([], 200);
 }
 
+
         $token = $request->bearerToken();
 
         if (!$token) {
