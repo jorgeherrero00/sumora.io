@@ -38,6 +38,7 @@ class ProcesarReunionSubida implements ShouldQueue
             
             // 2. Transcribir con Whisper
             $transcripcion = $this->transcribirAudio($audioPath);
+            Log::info('📝 Transcripción completada', ['length' => strlen($transcripcion)]);
 
             // 🚨 Si no hay nada transcrito, no seguir con GPT
         if (strlen(trim($transcripcion)) < 20) { // puedes ajustar el umbral
