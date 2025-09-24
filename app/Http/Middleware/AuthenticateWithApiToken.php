@@ -10,6 +10,11 @@ class AuthenticateWithApiToken
 {
    public function handle(Request $request, Closure $next)
 {
+
+
+
+    \Log::info('🔑 Token recibido', ['token' => $request->bearerToken()]);
+
     if ($request->getMethod() === "OPTIONS") {
         return response()->json([], 200, [
             'Access-Control-Allow-Origin' => $request->headers->get('Origin') ?? '*',
