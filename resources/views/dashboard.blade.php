@@ -42,7 +42,7 @@
             </div>
 
             <!-- Tareas Pendientes -->
-            <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
+<!--             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-gray-400 text-sm">Tareas Pendientes</p>
@@ -61,7 +61,7 @@
                         {{ auth()->user()->meetings()->with('tasks')->get()->pluck('tasks')->flatten()->where('completada', true)->count() }} completadas
                     </span>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Tiempo Transcrito -->
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 hover:border-orange-500/30 transition-all duration-300">
@@ -153,7 +153,7 @@
         </div>
 
         <!-- Reuniones Recientes y Tareas -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8">
             <!-- Reuniones Recientes -->
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
                 <div class="flex items-center justify-between mb-6">
@@ -206,7 +206,7 @@
             </div>
 
             <!-- Tareas Pendientes -->
-            <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+<!--             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-semibold text-white">Tareas Pendientes</h3>
                     <span class="bg-orange-500/20 text-orange-300 px-2 py-1 rounded-full text-xs">
@@ -247,11 +247,11 @@
                     </button>
                 </div>
                 @endif
-            </div>
+            </div> -->
         </div>
 
         <!-- Integraciones Rápidas -->
-        <div class="mt-8">
+        <!-- <div class="mt-8">
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
                 <div class="flex items-center justify-between mb-6">
                     <h3 class="text-xl font-semibold text-white">Conecta tus herramientas</h3>
@@ -301,7 +301,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <script>

@@ -251,30 +251,30 @@
                                                 </button>
                                                 
                                                 @if(auth()->user()->integrations->where('tipo', 'slack')->count() > 0)
-                                                <button onclick="sendToSlack({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                                                <!-- <button onclick="sendToSlack({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
                                                     <svg class="w-4 h-4 mr-2 text-green-400" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
                                                     </svg>
                                                     Enviar a Slack
-                                                </button>
+                                                </button> -->
                                                 @endif
                                                 
                                                 @if(auth()->user()->integrations->where('tipo', 'notion')->count() > 0)
-                                                <button onclick="sendToNotion({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                                                <!-- <button onclick="sendToNotion({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
                                                     <svg class="w-4 h-4 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466l1.823 1.447zm1.775 2.055c.187.466.187.886.187 1.727v13.775c0 .746.373 1.027 1.213 1.027.933 0 1.353-.28 1.727-1.12l7.318-11.85c.14-.186.047-.373-.094-.373l-3.896.7c-.28.047-.327.234-.187.42l4.734 7.318c.047.047.047.094.047.187v-1.727l-4.734-7.318c-.094-.14-.14-.326-.047-.514l.886-1.96c.187-.466.047-.98-.42-1.12L4.696 3.628c-.42-.14-.933 0-1.12.42l-.374.793c-.14.326-.28.7-.28 1.213L3.01 6.24c0 .466.28.653.653.653h2.147c.326-.047.42-.28.42-.606zm6.638 2.568c.187-.14.467-.047.653.093l1.12.84c.187.187.187.33.187.514v.046l-1.214 1.68-1.493-1.4c-.094-.187-.094-.33-.047-.514l.794-1.26zm-3.57 11.664c-.14.187-.047.373.094.467l1.214.84c.187.14.373.094.513-.047l2.708-3.734V8.954l-1.214 1.826-3.316 4.56z"/>
                                                     </svg>
                                                     Enviar a Notion
-                                                </button>
+                                                </button> -->
                                                 @endif
                                                 
                                                 @if(auth()->user()->integrations->where('tipo', 'google_sheets')->count() > 0)
-                                                <button onclick="sendToSheets({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                                               <!--  <button onclick="sendToSheets({{ $task->id }})" class="w-full flex items-center px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
                                                     <svg class="w-4 h-4 mr-2 text-green-500" fill="currentColor" viewBox="0 0 24 24">
                                                         <path d="M19.11 2H4.89A2.89 2.89 0 002 4.89v14.22A2.89 2.89 0 004.89 22h14.22A2.89 2.89 0 0022 19.11V4.89A2.89 2.89 0 0019.11 2zM8 6h8v2H8V6zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/>
                                                     </svg>
                                                     Enviar a Sheets
-                                                </button>
+                                                </button> -->
                                                 @endif
                                             </div>
                                         </div>
@@ -296,7 +296,7 @@
 
             <!-- Panel de acciones masivas -->
             @if($meeting->tasks->count() > 0)
-            <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
+            <!-- <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">
                 <h3 class="text-lg font-semibold text-white mb-4 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -304,44 +304,44 @@
                     Acciones rápidas
                 </h3>
 
-                <div class="space-y-3">
+                <div class="space-y-3"> -->
                     <!-- Enviar todas las tareas -->
                     @if(auth()->user()->integrations->count() > 0)
-                    <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700/30">
+                    <!-- <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700/30">
                         <h4 class="text-sm font-medium text-white mb-3">Enviar todas las tareas:</h4>
-                        <div class="grid grid-cols-1 gap-2">
+                        <div class="grid grid-cols-1 gap-2"> -->
                             @if(auth()->user()->integrations->where('tipo', 'slack')->count() > 0)
-                            <button onclick="sendAllTasksTo('slack')" class="flex items-center justify-center px-3 py-2 bg-green-600/20 hover:bg-green-600/30 text-green-300 rounded-lg transition-colors text-sm border border-green-600/30">
+                            <!-- <button onclick="sendAllTasksTo('slack')" class="flex items-center justify-center px-3 py-2 bg-green-600/20 hover:bg-green-600/30 text-green-300 rounded-lg transition-colors text-sm border border-green-600/30">
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313z"/>
                                 </svg>
                                 Todas a Slack
-                            </button>
+                            </button> -->
                             @endif
                             
                             @if(auth()->user()->integrations->where('tipo', 'notion')->count() > 0)
-                            <button onclick="sendAllTasksTo('notion')" class="flex items-center justify-center px-3 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors text-sm border border-blue-600/30">
+                            <!-- <button onclick="sendAllTasksTo('notion')" class="flex items-center justify-center px-3 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors text-sm border border-blue-600/30">
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466l1.823 1.447z"/>
                                 </svg>
                                 Todas a Notion
-                            </button>
+                            </button> -->
                             @endif
                             
                             @if(auth()->user()->integrations->where('tipo', 'google_sheets')->count() > 0)
-                            <button onclick="sendAllTasksTo('sheets')" class="flex items-center justify-center px-3 py-2 bg-green-600/20 hover:bg-green-600/30 text-green-300 rounded-lg transition-colors text-sm border border-green-600/30">
+                            <!-- <button onclick="sendAllTasksTo('sheets')" class="flex items-center justify-center px-3 py-2 bg-green-600/20 hover:bg-green-600/30 text-green-300 rounded-lg transition-colors text-sm border border-green-600/30">
                                 <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M19.11 2H4.89A2.89 2.89 0 002 4.89v14.22A2.89 2.89 0 004.89 22h14.22A2.89 2.89 0 0022 19.11V4.89A2.89 2.89 0 0019.11 2z"/>
                                 </svg>
                                 Todas a Sheets
-                            </button>
+                            </button> -->
                             @endif
-                        </div>
-                    </div>
+                        <!-- </div>
+                    </div> -->
                     @endif
 
                     <!-- Copiar todo -->
-                    <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700/30">
+                   <!--  <div class="bg-gray-900/50 rounded-lg p-4 border border-gray-700/30">
                         <h4 class="text-sm font-medium text-white mb-3">Exportar contenido:</h4>
                         <div class="grid grid-cols-2 gap-2">
                             <button onclick="copyAllTasks()" class="flex items-center justify-center px-3 py-2 bg-gray-600/20 hover:bg-gray-600/30 text-gray-300 rounded-lg transition-colors text-sm border border-gray-600/30">
@@ -358,10 +358,10 @@
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 @if(auth()->user()->integrations->count() === 0)
-                <div class="mt-4 p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
+               <!--  <div class="mt-4 p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
                     <div class="flex items-start gap-3">
                         <svg class="w-5 h-5 text-orange-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
@@ -379,10 +379,10 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 @endif
-            </div>
-            @endif
+<!--             </div>
+ -->            @endif
 
             <!-- Información del archivo -->
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">

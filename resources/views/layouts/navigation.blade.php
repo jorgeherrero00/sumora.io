@@ -18,9 +18,9 @@
                     <x-nav-link :href="route('reuniones.index')" :active="request()->routeIs('reuniones.index')" >
                         {{ __('My Meetings') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('integrations.index')" :active="request()->routeIs('integrations.index')">
+                   <!--  <x-nav-link :href="route('integrations.index')" :active="request()->routeIs('integrations.index')">
                         {{ __('My Api Keys') }}
-                    </x-nav-link>
+                    </x-nav-link> -->
                 </div>
             </div>
 

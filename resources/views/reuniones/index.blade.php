@@ -60,13 +60,13 @@
                 </div>
             </div>
             
-            <div class="flex items-center">
+            <!-- <div class="flex items-center">
                 <input type="checkbox" name="enviar_google_sheets" id="enviar_google_sheets" value="1" 
                        class="w-4 h-4 text-orange-500 border-gray-600 rounded focus:ring-orange-500">
                 <label for="enviar_google_sheets" class="ml-2 text-sm text-gray-300">
                     Guardar también en mi Google Sheets
                 </label>
-            </div>
+            </div> -->
             
             <!-- Barra de progreso (inicialmente oculta) -->
             <div id="progressContainer" class="hidden space-y-4">
