@@ -20,21 +20,19 @@ class AuthenticateWithApiToken
 
     $token = $request->bearerToken();
 
-    if (!$token) {
-        return response()->json(['error' => 'Token no proporcionado'], 401, [
-            'Access-Control-Allow-Origin' => $request->headers->get('Origin') ?? '*',
-        ]);
-    }
+   if (!$token) {
+    \Log::warning('❌ No llegó token en la extensión');
+    return response()->json(['error' => 'Token no proporcionado'], 401);
+}
 
-    $user = User::where('api_token', $token)->first();
+$user = User::where('api_token', $token)->first();
 
-    if (!$user) {
-        return response()->json(['error' => 'Token inválido'], 401, [
-            'Access-Control-Allow-Origin' => $request->headers->get('Origin') ?? '*',
-        ]);
-    }
+if (!$user) {
+    \Log::warning('❌ Token inválido', ['token' => $token]);
+    return response()->json(['error' => 'Token inválido'], 401);
+}
 
-    auth()->setUser($user);
+auth()->setUser($user);
 
     $response = $next($request);
     $response->headers->set('Access-Control-Allow-Origin', $request->headers->get('Origin') ?? '*');
