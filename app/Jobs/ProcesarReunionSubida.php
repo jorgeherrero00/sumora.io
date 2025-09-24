@@ -38,6 +38,21 @@ class ProcesarReunionSubida implements ShouldQueue
             
             // 2. Transcribir con Whisper
             $transcripcion = $this->transcribirAudio($audioPath);
+
+            // 🚨 Si no hay nada transcrito, no seguir con GPT
+        if (strlen(trim($transcripcion)) < 20) { // puedes ajustar el umbral
+            $this->meeting->update([
+                'transcripcion' => $transcripcion,
+                'resumen'       => '⚠️ No se detectó contenido hablado en el audio.',
+            ]);
+
+            Log::warning('⚠️ Reunión sin contenido hablado', [
+                'meeting_id' => $this->meeting->id,
+                'transcripcion' => $transcripcion
+            ]);
+
+            return;
+        }
             
             // 3. Generar resumen y tareas con GPT
             $resultado = $this->generarResumenYTareas($transcripcion);
