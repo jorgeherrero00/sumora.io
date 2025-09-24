@@ -75,8 +75,8 @@ class ProcesarReunionSubida implements ShouldQueue
             $nuevoPath = storage_path('app/public/reuniones/' . $nuevoNombre);
 
             $ffmpeg = \FFMpeg\FFMpeg::create([
-                'ffmpeg.binaries' => 'C:\ffmpeg\bin\ffmpeg.exe',
-                'ffprobe.binaries' => 'C:\ffmpeg\bin\ffprobe.exe',
+                'ffmpeg.binaries'  => '/usr/bin/ffmpeg',
+                'ffprobe.binaries' => '/usr/bin/ffprobe',
             ]);
 
             $video = $ffmpeg->open($pathOriginal);
