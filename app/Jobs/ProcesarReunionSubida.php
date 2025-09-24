@@ -41,7 +41,8 @@ class ProcesarReunionSubida implements ShouldQueue
             Log::info('📝 Transcripción completada', ['length' => strlen($transcripcion)]);
 
             // 🚨 Si no hay nada transcrito, no seguir con GPT
-        if (strlen(trim($transcripcion)) < 20) { // puedes ajustar el umbral
+            Log::info('Transcripcion válida?', ['valida' => $this->transcripcionValida($transcripcion)]);
+        if (!$this->transcripcionValida($transcripcion)) {
             $this->meeting->update([
                 'transcripcion' => $transcripcion,
                 'resumen'       => '⚠️ No se detectó contenido hablado en el audio.',
@@ -371,6 +372,18 @@ class ProcesarReunionSubida implements ShouldQueue
         
         // Aquí podrías añadir otras notificaciones como email directo
     }
+
+    private function transcripcionValida($texto)
+{
+    $limpio = trim(mb_strtolower($texto));
+
+    // Quitar signos, espacios, puntos suspensivos, corchetes
+    $limpio = preg_replace('/[^a-záéíóúñ0-9]+/u', '', $limpio);
+
+    // Si tras limpiar no queda nada o es demasiado corto, no es válido
+    return strlen($limpio) > 20;
+}
+
 
     private function enviarWebhookN8n($resultado)
     {
