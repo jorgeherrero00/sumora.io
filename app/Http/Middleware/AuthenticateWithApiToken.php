@@ -14,37 +14,17 @@ class AuthenticateWithApiToken
 
 
     \Log::info('🔑 Token recibido', ['token' => $request->bearerToken()]);
-
-    if ($request->getMethod() === "OPTIONS") {
-        return response()->json([], 200, [
-            'Access-Control-Allow-Origin' => $request->headers->get('Origin') ?? '*',
-            'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS',
-            'Access-Control-Allow-Headers' => 'Authorization, Content-Type',
-        ]);
-    }
-
-    $token = $request->bearerToken();
-
-   if (!$token) {
-    \Log::warning('❌ No llegó token en la extensión');
-    return response()->json(['error' => 'Token no proporcionado'], 401);
-}
-
-$user = User::where('api_token', $token)->first();
+$token = $request->bearerToken();
+    $user = User::where('api_token', $token)->first();
 
 if (!$user) {
-    \Log::warning('❌ Token inválido', ['token' => $token]);
     return response()->json(['error' => 'Token inválido'], 401);
 }
 
-auth()->setUser($user);
+// En lugar de loguear → simplemente lo guardas en la request
+$request->attributes->set('api_user', $user);
 
-    $response = $next($request);
-    $response->headers->set('Access-Control-Allow-Origin', $request->headers->get('Origin') ?? '*');
-    $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    $response->headers->set('Access-Control-Allow-Headers', 'Authorization, Content-Type');
-
-    return $response;
+return $next($request);
 }
 
 }
