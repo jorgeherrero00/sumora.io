@@ -10,6 +10,10 @@ class AuthenticateWithApiToken
 {
     public function handle(Request $request, Closure $next)
     {
+        if ($request->getMethod() === "OPTIONS") {
+    return response()->json([], 200);
+}
+
         $token = $request->bearerToken();
 
         if (!$token) {
