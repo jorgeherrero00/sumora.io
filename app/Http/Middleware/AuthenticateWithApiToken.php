@@ -27,7 +27,7 @@ class AuthenticateWithApiToken
             return response()->json(['error' => 'Token inválido'], 401);
         }
 
-        auth()->login($user);
+        auth()->setUser($user);
 
         return $next($request);
     }
