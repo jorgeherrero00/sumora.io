@@ -8,28 +8,32 @@
         <p class="text-gray-400 max-w-2xl mx-auto">Gestiona tus conversaciones y obtén resúmenes inteligentes al instante</p>
     </div>
 
-    <!-- Alerts -->
-    @if (session('success'))
-    <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: '{{ session('success') }}',
-            confirmButtonColor: '#f97316',
-            timer: 3000,
-        });
-    </script>
+   @if (session('success'))
+        <div class="mb-6 bg-green-500/20 border border-green-500 text-green-300 px-4 py-3 rounded-lg flex items-center">
+            <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="mb-6 bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg flex items-center">
+            <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {{ session('error') }}
+        </div>
     @endif
 
     @if ($errors->any())
-    <script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            html: `{!! implode('<br>', $errors->all()) !!}`,
-            confirmButtonColor: '#f43f5e',
-        });
-    </script>
+        <div class="mb-6 bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg">
+            <ul class="list-disc list-inside">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     <!-- Upload form -->

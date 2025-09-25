@@ -369,7 +369,11 @@
                         </li>
                     </ul>
                     
-                    <a href="#" class="block w-full py-3 px-6 text-center bg-gray-700 hover:bg-orange-500 text-white font-semibold rounded-lg transition-colors duration-300">Comenzar gratis</a>
+                
+
+                    <a href="{{ route('register') }}" class="block w-full py-3 px-6 text-center bg-white text-orange-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors duration-300 shadow-lg shadow-orange-600/20">
+                        Comenzar ahora
+                    </a>
                 </div>
             </div>
             
@@ -420,11 +424,37 @@
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            <span>Integraciones básicas</span>
+                            <span>Archivos hasta 60 min</span>
                         </li>
                     </ul>
                     
-                    <a href="#" class="block w-full py-3 px-6 text-center bg-white text-orange-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors duration-300 shadow-lg shadow-orange-600/20">Comenzar ahora</a>
+                    @auth
+                        @if(auth()->user()->subscription && auth()->user()->subscription->plan === 'starter' && auth()->user()->subscription->status === 'active')
+                            <button disabled class="block w-full py-3 px-6 text-center bg-gray-600 text-gray-300 font-semibold rounded-lg cursor-not-allowed">
+                                Plan Actual
+                            </button>
+                        @elseif(auth()->user()->subscription && auth()->user()->subscription->stripe_subscription_id)
+                            <form method="POST" action="{{ route('subscription.change-plan') }}">
+                                @csrf
+                                <input type="hidden" name="plan" value="starter">
+                                <button type="submit" class="block w-full py-3 px-6 text-center bg-white text-orange-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors duration-300">
+                                    {{ auth()->user()->subscription->plan === 'pro' ? 'Cambiar a Starter' : 'Comenzar ahora' }}
+                                </button>
+                            </form>
+                        @else
+                            <form method="POST" action="{{ route('checkout') }}">
+                                @csrf
+                                <input type="hidden" name="plan" value="starter">
+                                <button type="submit" class="block w-full py-3 px-6 text-center bg-white text-orange-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors duration-300">
+                                    Comenzar ahora
+                                </button>
+                            </form>
+                        @endif
+                    @else
+                        <a href="{{ route('register') }}" class="block w-full py-3 px-6 text-center bg-white text-orange-600 hover:bg-gray-100 font-semibold rounded-lg transition-colors duration-300">
+                            Comenzar ahora
+                        </a>
+                    @endauth
                 </div>
             </div>
             
@@ -464,7 +494,7 @@
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            <span>Integraciones Slack, Notion, Sheets</span>
+                            <span>Resumen + tareas</span>
                         </li>
                         <li class="flex items-start">
                             <span class="text-green-400 mr-3 mt-1">
@@ -472,11 +502,45 @@
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                                 </svg>
                             </span>
-                            <span>Prioridad soporte</span>
+                            <span>Archivos hasta 120 min</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-400 mr-3 mt-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                            </span>
+                            <span>Soporte prioritario</span>
                         </li>
                     </ul>
                     
-                    <a href="#" class="block w-full py-3 px-6 text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-300 shadow-lg shadow-orange-600/20">Actualizar a Pro</a>
+                    @auth
+                    @if(auth()->user()->subscription && auth()->user()->subscription->plan === 'pro' && auth()->user()->subscription->status === 'active')
+                        <button disabled class="block w-full py-3 px-6 text-center bg-gray-600 text-gray-300 font-semibold rounded-lg cursor-not-allowed">
+                            Plan Actual
+                        </button>
+                    @elseif(auth()->user()->subscription && auth()->user()->subscription->stripe_subscription_id)
+                        <form method="POST" action="{{ route('subscription.change-plan') }}">
+                            @csrf
+                            <input type="hidden" name="plan" value="pro">
+                            <button type="submit" class="block w-full py-3 px-6 text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-300">
+                                {{ auth()->user()->subscription->plan === 'starter' ? 'Actualizar a Pro' : 'Comenzar ahora' }}
+                            </button>
+                        </form>
+                    @else
+                        <form method="POST" action="{{ route('checkout') }}">
+                            @csrf
+                            <input type="hidden" name="plan" value="pro">
+                            <button type="submit" class="block w-full py-3 px-6 text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-300">
+                                Comenzar ahora
+                            </button>
+                        </form>
+                    @endif
+                @else
+                    <a href="{{ route('register') }}" class="block w-full py-3 px-6 text-center bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-lg transition-colors duration-300">
+                        Comenzar ahora
+                    </a>
+                @endauth
                 </div>
             </div>
         </div>

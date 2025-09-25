@@ -6,7 +6,7 @@ use App\Http\Controllers\MeetingController;
 use App\Http\Controllers\Api\ExtensionController;
 Route::get('/ping', fn() => response()->json(['pong' => true]));
 
- Route::middleware('auth.api_token')->post('/upload', [ExtensionController::class, 'uploadFromExtension']);
+ Route::middleware('auth.api_token', 'check.meeting.limit')->post('/upload', [ExtensionController::class, 'uploadFromExtension']);
  Route::options('/upload', function () {
     return response()->json(['status' => 'ok'], 200);
 });

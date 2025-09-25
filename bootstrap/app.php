@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\AuthenticateWithApiToken;
+use App\Http\Middleware\CheckMeetingLimit;
 use Illuminate\Http\Middleware\HandleCors;
 
 
@@ -21,6 +22,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->append(HandleCors::class);
         $middleware->alias([
             'auth.api_token' => AuthenticateWithApiToken::class,
+            'check.meeting.limit' => CheckMeetingLimit::class,
+
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
