@@ -78,6 +78,17 @@
 .nav-link.active::after {
     width: 100%;
 }
+#mobile-menu {
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+#mobile-menu.show {
+    max-height: 500px;
+    opacity: 1;
+}
     </style>
     </head>
 <body class="bg-[#0a0a0f] text-white font-sans antialiased">
@@ -99,6 +110,12 @@
         
         <!-- Auth buttons with hover effects -->
         <div class="hidden md:flex gap-4 items-center">
+            @auth
+            <a href="{{ route('dashboard') }}" class="text-sm group relative px-5 py-2.5 overflow-hidden rounded-lg bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md transition-all duration-300 hover:shadow-lg hover:shadow-orange-500/30 hover:-translate-y-0.5">
+                <span class="relative z-10 font-medium">Mi panel</span>
+                <span class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+            </a>
+            @else
             <a href="/login" class="text-sm text-gray-300 hover:text-white transition-colors duration-300 px-4 py-2">
                 Iniciar sesión
             </a>
@@ -106,10 +123,10 @@
                 <span class="relative z-10 font-medium">Regístrate</span>
                 <span class="absolute inset-0 bg-gradient-to-r from-orange-600 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
             </a>
+            @endauth
         </div>
-        
         <!-- Mobile menu button with animation -->
-        <button class="md:hidden relative group">
+        <button id="mobile-menu-button" class="md:hidden relative group">
             <div class="relative flex overflow-hidden items-center justify-center w-10 h-10">
                 <div class="flex flex-col justify-between w-6 h-5 transform transition-all duration-300 origin-center group-hover:scale-110">
                     <div class="bg-white h-0.5 w-6 rounded transform transition-all duration-300 origin-left group-hover:bg-orange-400"></div>
@@ -121,15 +138,19 @@
     </div>
     
     <!-- Mobile menu (hidden by default) -->
-    <div class="md:hidden hidden bg-black/90 backdrop-blur-xl border-t border-gray-800">
+    <div id="mobile-menu" class="md:hidden hidden bg-black/90 backdrop-blur-xl border-t border-gray-800">
         <nav class="flex flex-col py-6 px-6 space-y-4">
             <a href="#" class="py-2 nav-link pl-4">Inicio</a>
             <a href="#features" class="py-2 nav-link">Características</a>
             <a href="#planes" class="py-2 nav-link">Planes</a>
             <a href="#faq" class="py-2 nav-link">FAQ</a>
             <div class="pt-4 flex flex-col space-y-3">
+                @auth
+                <a href="{{ route('dashboard') }}" class="text-center py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium">Mi panel</a>
+                @else
                 <a href="/login" class="text-center py-2 text-gray-300 hover:text-white border border-gray-700 rounded-lg hover:border-gray-500 transition-colors duration-300">Iniciar sesión</a>
                 <a href="/register" class="text-center py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-lg font-medium">Regístrate</a>
+                @endauth
             </div>
         </nav>
     </div>
@@ -978,6 +999,36 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Agregar clase active al enlace clickeado
             this.classList.add('active');
+        });
+    });
+
+    // Menú móvil
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuButton && mobileMenu) {
+    mobileMenuButton.addEventListener('click', function() {
+        if (mobileMenu.classList.contains('hidden')) {
+            mobileMenu.classList.remove('hidden');
+            setTimeout(() => {
+                mobileMenu.classList.add('show');
+            }, 10);
+        } else {
+            mobileMenu.classList.remove('show');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
+        }
+    });
+    }
+
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            mobileMenu.classList.remove('show');
+            setTimeout(() => {
+                mobileMenu.classList.add('hidden');
+            }, 300);
         });
     });
 });
