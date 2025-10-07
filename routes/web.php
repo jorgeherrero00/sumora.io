@@ -69,6 +69,15 @@ Route::middleware(['auth'])->group(function () {
 Route::post('/stripe/webhook', [StripeController::class, 'webhook'])->name('stripe.webhook');
 
 
+
+// Páginas legales
+Route::get('/privacidad', [App\Http\Controllers\LegalController::class, 'privacyPolicy'])->name('privacy.policy');
+Route::get('/terminos', [App\Http\Controllers\LegalController::class, 'termsOfService'])->name('terms.service');
+Route::get('/cookies', [App\Http\Controllers\LegalController::class, 'cookiePolicy'])->name('cookie.policy');
+
+// Ruta para el contacto
+Route::post('/contacto', [App\Http\Controllers\ContactController::class, 'send'])->name('contact.send');
+
 // OAuth Google Routes
 Route::get('/oauth/google', [GoogleController::class, 'redirect'])->name('oauth.google.redirect');
 Route::get('/oauth/google/callback', [GoogleController::class, 'callback'])->name('oauth.google.callback');
