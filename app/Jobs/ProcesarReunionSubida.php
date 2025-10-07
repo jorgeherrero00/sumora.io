@@ -143,45 +143,77 @@ class ProcesarReunionSubida implements ShouldQueue
         // Extraer tareas
         $tareas = $this->extraerTareas($transcripcion);
 
+        $insight = $this->generarInsight($transcripcion);
+
         return [
             'resumen' => $resumen,
-            'tareas' => $tareas
+            'tareas' => $tareas,
+            'insight' => $insight
         ];
     }
 
     private function generarResumen($transcripcion)
-    {
-        $prompt = <<<TXT
-        Actúa como un asistente profesional y redacta un resumen ejecutivo de esta reunión.
+{
+    $prompt = <<<TXT
+    INSTRUCCIÓN CRÍTICA: Responde ÚNICAMENTE con HTML puro. NO uses bloques de código Markdown.
 
-        Incluye:
-        1. Objetivo de la reunión
-        2. Puntos clave tratados
-        3. Decisiones tomadas
-        4. Próximos pasos (si los hay)
+    Tu respuesta debe empezar directamente con <h3> y terminar con </ul> o </p>.
+    NO añadas ```html al inicio ni ``` al final.
 
-        Sé claro, profesional y directo. Redacta en un tono neutro y ordenado.
+    Genera un resumen ejecutivo usando esta estructura HTML:
 
-        Texto de la reunión:
-        ---
-        $transcripcion
-        TXT;
+    <h3>Objetivo de la reunión</h3>
+    <p>Descripción del objetivo principal</p>
 
-        $response = Http::withToken(config('services.openai.key'))
-            ->post('https://api.openai.com/v1/chat/completions', [
-                'model' => 'gpt-4o-mini',
-                'messages' => [
-                    ['role' => 'system', 'content' => 'Eres un asistente experto en resumir reuniones.'],
-                    ['role' => 'user', 'content' => $prompt],
+    <h3>Puntos clave tratados</h3>
+    <ul>
+        <li>Punto importante 1</li>
+        <li>Punto importante 2</li>
+    </ul>
+
+    <h3>Decisiones tomadas</h3>
+    <p>Decisiones concretas o "No se tomaron decisiones explícitas"</p>
+
+    <h3>Próximos pasos</h3>
+    <ul>
+        <li>Acción 1</li>
+        <li>Acción 2</li>
+    </ul>
+
+    Texto de la reunión:
+    ---
+    $transcripcion
+    TXT;
+
+    $response = Http::withToken(config('services.openai.key'))
+        ->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4o-mini',
+            'messages' => [
+                [
+                    'role' => 'system', 
+                    'content' => 'Eres un asistente que responde SOLO en HTML válido. Tu respuesta siempre empieza con una etiqueta HTML como <h3>, nunca con texto plano ni bloques de código.'
                 ],
-            ]);
+                ['role' => 'user', 'content' => $prompt],
+            ],
+            'temperature' => 0.3,
+        ]);
 
-        if (!$response->successful()) {
-            throw new \Exception('Error generando resumen: ' . $response->body());
-        }
-
-        return $response->json()['choices'][0]['message']['content'] ?? '';
+    if (!$response->successful()) {
+        throw new \Exception('Error generando resumen: ' . $response->body());
     }
+
+    $html = $response->json()['choices'][0]['message']['content'] ?? '';
+    
+    // 🧹 CRÍTICO: Eliminar bloques de código Markdown
+    $html = preg_replace('/^```html\s*/i', '', $html);
+    $html = preg_replace('/^```\s*/i', '', $html);
+    $html = preg_replace('/\s*```$/i', '', $html);
+    $html = trim($html);
+    
+    Log::info('📄 HTML generado (limpio)', ['preview' => substr($html, 0, 200)]);
+    
+    return $html;
+}
 
     private function extraerTareas($transcripcion)
     {
@@ -236,6 +268,66 @@ class ProcesarReunionSubida implements ShouldQueue
         return $tareas;
     }
 
+    private function generarInsight($transcripcion)
+{
+    $prompt = <<<TXT
+    INSTRUCCIÓN CRÍTICA: Responde ÚNICAMENTE con HTML puro. NO uses bloques de código Markdown.
+
+    Tu respuesta debe empezar directamente con <h4> y terminar con </p>.
+    NO añadas ```html al inicio ni ``` al final.
+
+    Analiza esta reunión y genera un insight conductual con esta estructura HTML:
+
+    <h4>Estructura y liderazgo</h4>
+    <p>Análisis del liderazgo y dinámica de control</p>
+
+    <h4>Distribución de carga y accountability</h4>
+    <p>Análisis de asignación de tareas</p>
+
+    <h4>Tono y orientación</h4>
+    <p>Análisis del tono general</p>
+
+    <h4>Recomendaciones</h4>
+    <p>Sugerencias para mejorar</p>
+
+    Texto de la reunión:
+    ---
+    $transcripcion
+    TXT;
+
+    $response = Http::withToken(config('services.openai.key'))
+        ->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4o-mini',
+            'messages' => [
+                [
+                    'role' => 'system', 
+                    'content' => 'Eres un analista experto. Respondes SOLO en HTML válido. Tu respuesta siempre empieza con <h4>, nunca con texto plano ni bloques de código.'
+                ],
+                ['role' => 'user', 'content' => $prompt],
+            ],
+            'temperature' => 0.7,
+        ]);
+
+    if (!$response->successful()) {
+        Log::warning('⚠️ No se pudo generar insight', ['error' => $response->body()]);
+        return null;
+    }
+
+    $html = $response->json()['choices'][0]['message']['content'] ?? null;
+    
+    if ($html) {
+        // 🧹 CRÍTICO: Eliminar bloques de código Markdown
+        $html = preg_replace('/^```html\s*/i', '', $html);
+        $html = preg_replace('/^```\s*/i', '', $html);
+        $html = preg_replace('/\s*```$/i', '', $html);
+        $html = trim($html);
+        
+        Log::info('💡 HTML generado (limpio)', ['preview' => substr($html, 0, 200)]);
+    }
+    
+    return $html;
+}
+
     private function guardarResultados($transcripcion, $resultado)
     {
         Log::info('💾 Guardando resultados en base de datos');
@@ -244,6 +336,7 @@ class ProcesarReunionSubida implements ShouldQueue
         $this->meeting->update([
             'transcripcion' => $transcripcion,
             'resumen' => $resultado['resumen'],
+            'insight' => $resultado['insight'],
         ]);
 
         // Guardar tareas

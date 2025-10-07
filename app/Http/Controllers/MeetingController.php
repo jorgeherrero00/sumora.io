@@ -13,6 +13,8 @@ use App\Services\SlackService;
 use App\Services\GoogleSheetsService;
 use App\Models\Task;
 use Illuminate\Support\Facades\Http;
+use App\Mail\MeetingSummaryMail;
+use Illuminate\Support\Facades\Mail;
 
 class MeetingController extends Controller
 {
@@ -391,4 +393,19 @@ public function show(Meeting $meeting)
         return response()->json(['success' => false, 'message' => 'Error al enviar a Google Sheets'], 400);
     }
 
+    /**
+     * Enviar un correo con el resumen e insight de la reunión
+     */
+        public function sendEmail(Meeting $meeting)
+        {
+            
+            try {
+                Mail::to(auth()->user()->email)->queue(new MeetingSummaryMail($meeting));
+                // Verificar si el correo se envió correctamente y mostrarlo en el log
+                Log::info('✅ Correo de resumen de reunión enviado', ['meeting_id' => $meeting->id]);
+                return response()->json(['success' => true]);
+            } catch (\Throwable $e) {
+                return response()->json(['success' => false, 'message' => $e->getMessage()]);
+            }
+        }
 }

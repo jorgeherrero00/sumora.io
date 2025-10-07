@@ -31,6 +31,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/reuniones', [MeetingController::class, 'store'])->middleware('check.meeting.limit')->name('reuniones.store');
 
     Route::get('/reuniones/{meeting}', [MeetingController::class, 'show'])->name('reuniones.show');
+
+    Route::post('/meetings/{meeting}/send-email', [MeetingController::class, 'sendEmail'])->name('meetings.send-email');
     
     // Integrations
     Route::get('/integrations', [IntegrationController::class, 'index'])->name('integrations.index');

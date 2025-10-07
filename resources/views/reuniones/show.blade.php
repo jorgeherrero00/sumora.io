@@ -36,11 +36,11 @@
                 </span>
             @endif
             
-            <button onclick="shareReunion()" class="inline-flex items-center px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors border border-blue-600/30">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+            <button onclick="sendMeetingByEmail()" class="inline-flex items-center px-4 py-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-300 rounded-lg transition-colors border border-blue-600/30">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12H8m8 0l-4 4m4-4l-4-4m8 8V4a2 2 0 00-2-2H6a2 2 0 00-2 2v16a2 2 0 002 2h8" />
                 </svg>
-                Compartir
+                Enviar por correo
             </button>
         </div>
     </div>
@@ -148,7 +148,7 @@
                     </div>
                 </div>
                 <div id="resumen-content" class="prose prose-invert max-w-none text-white">
-                    {!! Str::markdown($meeting->resumen) !!}
+                        {!! $meeting->resumen !!}
                 </div>
             </div>
             @else
@@ -166,6 +166,42 @@
                 </div>
             </div>
             @endif
+
+
+            @if($meeting->insight)
+                <div class="bg-gradient-to-br from-purple-900/30 to-blue-900/30 backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 shadow-lg shadow-purple-500/10">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            Insight conductual
+                           
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="copyToClipboard('insight')" class="p-2 text-gray-400 hover:text-white hover:bg-purple-700/50 rounded-lg transition-colors" title="Copiar insight">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gray-900/50 rounded-lg p-5 border-purple-500/20">
+                        <div id="insight-content" class="prose prose-invert max-w-none text-gray-200 leading-relaxed">
+                            {!! Str::markdown($meeting->insight) !!}
+                        </div>
+                    </div>
+                    
+                    <!-- Badge decorativo -->
+                    <div class="mt-4 flex items-center gap-2 text-xs text-purple-300/70">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        <span>Análisis automático basado en patrones de comunicación</span>
+                    </div>
+                </div>
+                @endif
 
             <!-- Transcripción completa -->
             @if($meeting->transcripcion)
@@ -486,31 +522,40 @@ function toggleFullscreen(elementId) {
     }
 }
 
-// Compartir reunión
-function shareReunion() {
-    const url = window.location.href;
-    
-    if (navigator.share) {
-        navigator.share({
-            title: '{{ $meeting->titulo ?? "Reunión" }}',
-            text: 'Resumen de reunión generado por Syntal',
-            url: url
-        });
-    } else {
-        // Fallback: copiar URL
-        navigator.clipboard.writeText(url).then(() => {
+function sendMeetingByEmail() {
+    fetch(`/meetings/{{ $meeting->id }}/send-email`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
             Swal.fire({
                 icon: 'success',
-                title: 'Enlace copiado',
-                text: 'El enlace de la reunión se ha copiado al portapapeles',
-                timer: 2000,
-                showConfirmButton: false,
+                title: 'Enviado',
+                text: 'El informe se ha enviado correctamente a tu correo.',
+                timer: 3000,
                 toast: true,
-                position: 'top-end'
+                position: 'top-end',
+                showConfirmButton: false
             });
-        });
-    }
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: data.message || 'No se pudo enviar el correo.',
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                showConfirmButton: false
+            });
+        }
+    });
 }
+
 
 // Auto-refresh si la reunión está procesando
 @if(!$meeting->resumen)

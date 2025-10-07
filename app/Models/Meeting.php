@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Meeting extends Model
 {
     protected $fillable = [
-        'user_id', 'titulo', 'archivo', 'transcripcion', 'resumen','formato_origen','guardar_en_google_sheets'
+        'user_id', 'titulo', 'archivo', 'transcripcion', 'resumen','formato_origen', 'guardar_en_google_sheets', 'insight'
     ];
 
     public function user()
