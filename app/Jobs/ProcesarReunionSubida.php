@@ -135,7 +135,7 @@ class ProcesarReunionSubida implements ShouldQueue
 
     private function generarResumenYTareas($transcripcion)
     {
-        Log::info('🤖 Generando resumen y tareas con GPT-4');
+         Log::info('🤖 Generando resumen, tareas e insights con GPT-4');
 
         // Generar resumen
         $resumen = $this->generarResumen($transcripcion);
@@ -143,12 +143,17 @@ class ProcesarReunionSubida implements ShouldQueue
         // Extraer tareas
         $tareas = $this->extraerTareas($transcripcion);
 
+        // Generar insight conductual
         $insight = $this->generarInsight($transcripcion);
+
+        // 🆕 Generar análisis de sentimiento
+        $sentimentAnalysis = $this->generarAnalisisSentimiento($transcripcion);
 
         return [
             'resumen' => $resumen,
             'tareas' => $tareas,
-            'insight' => $insight
+            'insight' => $insight,
+            'sentiment_analysis' => $sentimentAnalysis, // 👈 Nuevo
         ];
     }
 
@@ -328,6 +333,73 @@ class ProcesarReunionSubida implements ShouldQueue
     return $html;
 }
 
+
+private function generarAnalisisSentimiento($transcripcion)
+{
+    $prompt = <<<TXT
+    Analiza el tono emocional de esta reunión y proporciona ÚNICAMENTE un JSON válido con esta estructura exacta:
+
+    {
+        "positivo": 68,
+        "neutral": 24,
+        "critico": 8,
+        "resumen_sentimiento": "La reunión muestra un ambiente mayormente positivo con alta participación del equipo."
+    }
+
+    Los porcentajes deben sumar 100. Analiza:
+    - Palabras positivas (logros, acuerdos, felicitaciones)
+    - Palabras neutrales (información, datos, reportes)
+    - Palabras críticas (problemas, preocupaciones, desacuerdos)
+
+    NO agregues explicaciones, SOLO el JSON.
+
+    Texto de la reunión:
+    ---
+    $transcripcion
+    TXT;
+
+    $response = Http::withToken(config('services.openai.key'))
+        ->post('https://api.openai.com/v1/chat/completions', [
+            'model' => 'gpt-4o-mini',
+            'messages' => [
+                [
+                    'role' => 'system', 
+                    'content' => 'Eres un analista de sentimientos. Respondes ÚNICAMENTE con JSON válido, sin texto adicional.'
+                ],
+                ['role' => 'user', 'content' => $prompt],
+            ],
+            'temperature' => 0.3,
+        ]);
+
+    if (!$response->successful()) {
+        Log::warning('⚠️ No se pudo generar análisis de sentimiento');
+        return null;
+    }
+
+    $jsonText = $response->json()['choices'][0]['message']['content'] ?? null;
+    
+    if ($jsonText) {
+        // Limpiar posibles bloques de código markdown
+        $jsonText = preg_replace('/^```json\s*/i', '', $jsonText);
+        $jsonText = preg_replace('/^```\s*/i', '', $jsonText);
+        $jsonText = preg_replace('/\s*```$/i', '', $jsonText);
+        $jsonText = trim($jsonText);
+        
+        try {
+            $sentimentData = json_decode($jsonText, true);
+            
+            if (json_last_error() === JSON_ERROR_NONE) {
+                Log::info('😊 Análisis de sentimiento generado', $sentimentData);
+                return $sentimentData;
+            }
+        } catch (\Exception $e) {
+            Log::error('❌ Error parseando JSON de sentimiento', ['error' => $e->getMessage()]);
+        }
+    }
+    
+    return null;
+}
+
     private function guardarResultados($transcripcion, $resultado)
     {
         Log::info('💾 Guardando resultados en base de datos');
@@ -337,6 +409,7 @@ class ProcesarReunionSubida implements ShouldQueue
             'transcripcion' => $transcripcion,
             'resumen' => $resultado['resumen'],
             'insight' => $resultado['insight'],
+            'sentiment_analysis' => $resultado['sentiment_analysis'], // 👈 Nuevo
         ]);
 
         // Guardar tareas
@@ -344,7 +417,7 @@ class ProcesarReunionSubida implements ShouldQueue
             $this->meeting->tasks()->create([
                 'descripcion' => $tareaDescripcion,
             ]);
-        }
+    }
     }
 
     private function enviarAIntegraciones($resultado)

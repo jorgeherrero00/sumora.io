@@ -203,6 +203,132 @@
                 </div>
                 @endif
 
+            @if($meeting->sentiment_analysis)
+<div class="bg-gray-800/40 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6 mb-6">
+    <h3 class="text-xl font-semibold mb-4 flex items-center text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Análisis de Sentimiento
+    </h3>
+    
+    <div class="space-y-4">
+        <!-- Positivo -->
+        <div class="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                    <div class="bg-green-500/20 p-2 rounded-lg mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <span class="text-gray-300 font-medium">Positivo</span>
+                </div>
+                <span class="text-green-400 font-bold text-lg">{{ $meeting->sentiment_analysis['positivo'] ?? 0 }}%</span>
+            </div>
+            <!-- Contenedor con ancho 100% -->
+            <div class="relative w-full h-2.5 bg-gray-700/50 rounded-full overflow-hidden">
+                <!-- Barra con width inline -->
+                <div class="absolute top-0 left-0 h-full rounded-full shadow-lg"
+                     style="width: {{ $meeting->sentiment_analysis['positivo'] ?? 0 }}%; background: linear-gradient(to right, #4ade80, #10b981);"></div>
+            </div>
+        </div>
+        
+        <!-- Neutral -->
+        <div class="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                    <div class="bg-blue-500/20 p-2 rounded-lg mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <span class="text-gray-300 font-medium">Neutral</span>
+                </div>
+                <span class="text-blue-400 font-bold text-lg">{{ $meeting->sentiment_analysis['neutral'] ?? 0 }}%</span>
+            </div>
+            <div class="relative w-full h-2.5 bg-gray-700/50 rounded-full overflow-hidden">
+                <div class="absolute top-0 left-0 h-full rounded-full shadow-lg"
+                     style="width: {{ $meeting->sentiment_analysis['neutral'] ?? 0 }}%; background: linear-gradient(to right, #60a5fa, #06b6d4);"></div>
+            </div>
+        </div>
+        
+        <!-- Crítico -->
+        <div class="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50">
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center">
+                    <div class="bg-yellow-500/20 p-2 rounded-lg mr-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                    <span class="text-gray-300 font-medium">Crítico</span>
+                </div>
+                <span class="text-yellow-400 font-bold text-lg">{{ $meeting->sentiment_analysis['critico'] ?? 0 }}%</span>
+            </div>
+            <div class="relative w-full h-2.5 bg-gray-700/50 rounded-full overflow-hidden">
+                <div class="absolute top-0 left-0 h-full rounded-full shadow-lg"
+                     style="width: {{ $meeting->sentiment_analysis['critico'] ?? 0 }}%; background: linear-gradient(to right, #facc15, #f97316);"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Resumen del sentimiento -->
+    @if(isset($meeting->sentiment_analysis['resumen_sentimiento']))
+    <div class="mt-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+        <div class="flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p class="text-sm text-gray-300">
+                <span class="font-semibold text-white">Clima general:</span> 
+                {{ $meeting->sentiment_analysis['resumen_sentimiento'] }}
+            </p>
+        </div>
+    </div>
+    @endif
+    
+    <!-- Badge del sentimiento dominante -->
+    @php
+        $sentimientos = array_filter($meeting->sentiment_analysis, function($key) {
+            return in_array($key, ['positivo', 'neutral', 'critico']);
+        }, ARRAY_FILTER_USE_KEY);
+        
+        arsort($sentimientos);
+        $dominante = array_key_first($sentimientos);
+        
+        $badges = [
+            'positivo' => [
+                'class' => 'bg-green-500/20 text-green-300 border-green-500/30',
+                'texto' => 'Reunión predominantemente positiva',
+                'icon' => 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+            ],
+            'neutral' => [
+                'class' => 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+                'texto' => 'Reunión de carácter informativo',
+                'icon' => 'M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'
+            ],
+            'critico' => [
+                'class' => 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+                'texto' => 'Reunión con puntos críticos a revisar',
+                'icon' => 'M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z'
+            ]
+        ];
+        
+        $badge = $badges[$dominante] ?? $badges['neutral'];
+    @endphp
+    
+    <div class="mt-4 flex justify-center">
+        <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium border {{ $badge['class'] }}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $badge['icon'] }}" />
+            </svg>
+            {{ $badge['texto'] }}
+        </span>
+    </div>
+</div>
+@endif
+
             <!-- Transcripción completa -->
             @if($meeting->transcripcion)
             <div class="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-6">

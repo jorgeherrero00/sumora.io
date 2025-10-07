@@ -287,20 +287,150 @@
     </div>
     
     <!-- Extra feature highlight -->
-    <div class="max-w-6xl mx-auto mt-20 bg-gradient-to-r from-orange-600/30 to-red-600/30 rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-10">
-        <div class="md:w-1/2">
-            <div class="inline-block bg-orange-500 text-white px-3 py-1 rounded-full text-xs uppercase tracking-wider mb-4">Exclusivo</div>
-            <h3 class="text-3xl font-bold mb-4">Análisis de sentimiento</h3>
-            <p class="text-gray-300 mb-6">Nuestra IA detecta el tono emocional de las conversaciones, destacando posibles conflictos o puntos de acuerdo.</p>
-            <a href="#demo" class="inline-flex items-center text-orange-400 hover:text-orange-300 font-semibold">
-                Descubre cómo funciona
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-            </a>
-        </div>
-        <div class="md:w-1/2">
-            <img src="/img/sentiment-analysis.png" alt="Análisis de sentimiento" class="rounded-xl shadow-lg w-full" onerror="this.src='https://placehold.co/600x400/orange/white?text=Análisis+de+Sentimiento'">
+    <div class="max-w-6xl mx-auto mt-20 bg-gray-800/40 backdrop-blur-sm border border-gray-700/50 rounded-2xl overflow-hidden">
+        <div class="grid md:grid-cols-2 gap-0">
+            <!-- Texto -->
+            <div class="p-8 md:p-12 flex flex-col justify-center">
+                <div class="inline-flex items-center bg-gradient-to-r from-purple-500/20 to-pink-500/20 px-3 py-1 rounded-full border border-purple-500/30 mb-4 w-fit">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                    </svg>
+                    <span class="text-purple-300 text-xs font-semibold uppercase tracking-wider">Análisis Avanzado</span>
+                </div>
+                
+                <h3 class="text-3xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                    Detecta el clima de tus reuniones
+                </h3>
+                
+                <p class="text-gray-300 mb-6 text-lg leading-relaxed">
+                    Identifica automáticamente el tono emocional de cada conversación, descubre posibles tensiones antes de que escalen y reconoce los momentos de mayor consenso.
+                </p>
+                
+                <div class="space-y-3">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-purple-500/20 p-2 rounded-lg mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-medium mb-1">Análisis de sentimiento en tiempo real</h4>
+                            <p class="text-gray-400 text-sm">Detecta si el ambiente es colaborativo, tenso o neutral</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-purple-500/20 p-2 rounded-lg mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-medium mb-1">Métricas de participación</h4>
+                            <p class="text-gray-400 text-sm">Descubre quién lidera la conversación y quién necesita más espacio</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 bg-purple-500/20 p-2 rounded-lg mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-medium mb-1">Alertas de conflictos potenciales</h4>
+                            <p class="text-gray-400 text-sm">Recibe notificaciones cuando se detectan señales de desacuerdo</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <a href="#demo" class="inline-flex items-center text-purple-400 hover:text-purple-300 font-semibold mt-8 group">
+                    Ver ejemplo en vivo
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </a>
+            </div>
+            
+            <!-- Visualización moderna -->
+            <div class="bg-gradient-to-br from-purple-900/20 to-pink-900/20 p-8 md:p-12 flex items-center justify-center relative overflow-hidden">
+                <!-- Decoración de fondo -->
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5"></div>
+                <div class="absolute top-0 right-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-pink-500/10 rounded-full blur-3xl"></div>
+                
+                <!-- Gráfico de sentimiento moderno -->
+                <div class="relative z-10 w-full max-w-md">
+                    <!-- Indicadores de sentimiento -->
+                    <div class="space-y-4">
+                        <!-- Positivo -->
+                        <div class="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 transform hover:scale-105 transition-transform">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <div class="bg-green-500/20 p-2 rounded-lg mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-300 font-medium">Positivo</span>
+                                </div>
+                                <span class="text-green-400 font-bold text-lg">68%</span>
+                            </div>
+                            <div class="w-full bg-gray-700/50 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-green-400 to-emerald-500 h-2 rounded-full shadow-lg" style="width: 68%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Neutral -->
+                        <div class="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 transform hover:scale-105 transition-transform">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <div class="bg-blue-500/20 p-2 rounded-lg mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-300 font-medium">Neutral</span>
+                                </div>
+                                <span class="text-blue-400 font-bold text-lg">24%</span>
+                            </div>
+                            <div class="w-full bg-gray-700/50 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-blue-400 to-cyan-500 h-2 rounded-full shadow-lg" style="width: 24%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Crítico -->
+                        <div class="bg-gray-800/60 backdrop-blur-sm rounded-xl p-4 border border-gray-700/50 transform hover:scale-105 transition-transform">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center">
+                                    <div class="bg-yellow-500/20 p-2 rounded-lg mr-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                        </svg>
+                                    </div>
+                                    <span class="text-gray-300 font-medium">Crítico</span>
+                                </div>
+                                <span class="text-yellow-400 font-bold text-lg">8%</span>
+                            </div>
+                            <div class="w-full bg-gray-700/50 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-yellow-400 to-orange-500 h-2 rounded-full shadow-lg" style="width: 8%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Resumen -->
+                    <div class="mt-6 bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-sm rounded-xl p-4 border border-purple-500/20">
+                        <div class="flex items-start">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-400 mr-2 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <p class="text-sm text-gray-300">
+                                <span class="font-semibold text-white">Clima general:</span> La reunión muestra un ambiente mayormente positivo con alta participación del equipo.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
