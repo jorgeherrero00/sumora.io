@@ -3,13 +3,34 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <meta name="description" content="Syntal es una herramienta que transforma tus reuniones en acciones concretas. Sube tus grabaciones y obtén resúmenes, análisis de sentimiento e insights conductuales.">
+        <meta name="keywords" content="Syntal, reuniones, resúmenes, análisis de sentimiento, insights conductuales, productividad, gestión de tareas">
+        <meta name="author" content="Syntal">
+        <meta property="og:title" content="Syntal | Transforma tus reuniones">
+        <meta property="og:description" content="Syntal es una herramienta que transforma tus reuniones en acciones concretas. Sube tus grabaciones y obtén resúmenes, análisis de sentimiento e insights conductuales.">
+        <meta property="og:image" content="{{ asset('logos/logo.png') }}">
+        <meta property="og:url" content="https://www.syntal.com">
+        <meta property="og:type" content="website">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Syntal | Transforma tus reuniones">
+        <meta name="twitter:description" content="Syntal es una herramienta que transforma tus reuniones en acciones concretas. Sube tus grabaciones y obtén resúmenes, análisis de sentimiento e insights conductuales.">
+        <meta name="twitter:image" content="{{ asset('logos/logo.png') }}">
+        <!-- Scripts -->
     <title>Syntal | Transforma tus reuniones</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
         <link rel="icon" href="{{ asset('logos/logo.png') }}" type="image/png">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+<!-- SweetAlert2 (CDN oficial) -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Animate.css (opcional para animaciones suaves) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+
+
+
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -197,11 +218,11 @@
         <!-- Stats -->
         <div class="flex flex-wrap justify-center gap-10 text-center mb-16">
             <div class="backdrop-blur-md bg-white/5 px-6 py-4 rounded-xl border border-white/10">
-                <span class="block text-3xl font-bold text-orange-400 mb-1">4,800+</span>
+                <span class="block text-3xl font-bold text-orange-400 mb-1">500+</span>
                 <span class="text-gray-400">Usuarios activos</span>
             </div>
             <div class="backdrop-blur-md bg-white/5 px-6 py-4 rounded-xl border border-white/10">
-                <span class="block text-3xl font-bold text-orange-400 mb-1">32K+</span>
+                <span class="block text-3xl font-bold text-orange-400 mb-1">2K+</span>
                 <span class="text-gray-400">Reuniones analizadas</span>
             </div>
             <div class="backdrop-blur-md bg-white/5 px-6 py-4 rounded-xl border border-white/10">
@@ -1012,30 +1033,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-4">
-                            <div class="bg-orange-500/20 p-3 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold mb-1">Ubicación</h4>
-                                <p class="text-gray-400">Madrid, España</p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-4">
-                            <div class="bg-orange-500/20 p-3 rounded-lg">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold mb-1">Horario</h4>
-                                <p class="text-gray-400">Lun - Vie: 9:00 - 18:00</p>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -1100,7 +1098,7 @@
         <div class="grid md:grid-cols-4 gap-8 mb-8">
             <div>
                 <h3 class="font-bold text-lg mb-4">Syntal</h3>
-                <p class="text-gray-400 text-sm">Transforma tus reuniones en acciones concretas con IA.</p>
+                <p class="text-gray-400 text-sm">Transforma tus reuniones en acciones concretas con Syntal.</p>
             </div>
             
             <div>
@@ -1134,6 +1132,86 @@
         </div>
     </div>
 </footer>
+
+@if (session('success'))
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    Swal.fire({
+        title: '¡Mensaje enviado!',
+        text: "{{ session('success') }}. Te contactaremos lo antes posible.",
+        icon: 'success',
+        background: '#1a1a1a',
+        color: '#f1f1f1',
+        confirmButtonText: 'Perfecto',
+        confirmButtonColor: '#10b981', // verde moderno
+        showClass: {
+            popup: `
+                animate__animated
+                animate__fadeInDown
+                animate__faster
+            `
+        },
+        hideClass: {
+            popup: `
+                animate__animated
+                animate__fadeOutUp
+                animate__faster
+            `
+        },
+        didOpen: () => {
+            const popup = Swal.getPopup();
+            popup.style.border = '1px solid rgba(255,255,255,0.1)';
+            popup.style.backdropFilter = 'blur(6px)';
+            popup.style.boxShadow = '0 8px 30px rgba(16,185,129,0.3)';
+        },
+        timer: 4000,
+        timerProgressBar: true,
+    });
+});
+</script>
+@endif
+
+@if ($errors->any())
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    Swal.fire({
+        title: 'Error al enviar',
+        html: `
+            <ul style="text-align:left; list-style-type:disc; padding-left:1.5rem;">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        `,
+        icon: 'error',
+        background: '#1a1a1a',
+        color: '#f1f1f1',
+        confirmButtonText: 'Entendido',
+        confirmButtonColor: '#ef4444', // rojo moderno
+        showClass: {
+            popup: `
+                animate__animated
+                animate__fadeInDown
+                animate__faster
+            `
+        },
+        hideClass: {
+            popup: `
+                animate__animated
+                animate__fadeOutUp
+                animate__faster
+            `
+        },
+        didOpen: () => {
+            const popup = Swal.getPopup();
+            popup.style.border = '1px solid rgba(255,255,255,0.1)';
+            popup.style.backdropFilter = 'blur(6px)';
+            popup.style.boxShadow = '0 8px 30px rgba(239,68,68,0.3)';
+        }
+    });
+});
+</script>
+@endif
 </body>
 
 

@@ -16,15 +16,13 @@ class ContactController extends Controller
             'message' => 'required|string|max:5000',
         ]);
 
-        // Aquí puedes enviar el email o guardarlo en BD
-
+        // Enviar el email
         Mail::raw($validated['message'], function ($message) use ($validated) {
             $message->to('jorgeherrero.dev@gmail.com')
-                    ->subject('Contacto desde Sumora: ' . $validated['subject'])
+                    ->subject('Contacto desde Syntal: ' . $validated['subject'])
                     ->replyTo($validated['email'], $validated['name']);
         });
-        // Por ahora solo redirigimos con mensaje de éxito
         
-        return redirect()->back()->with('success', '¡Gracias por contactarnos! Te responderemos pronto.');
+        return redirect('/')->with('success', 'Mensaje enviado correctamente');
     }
 }
