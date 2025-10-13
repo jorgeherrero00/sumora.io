@@ -17,10 +17,14 @@ class ContactController extends Controller
         ]);
 
         // Enviar el email
-        Mail::raw($validated['message'], function ($message) use ($validated) {
+        $emailContent = "Nombre: " . $validated['name'] . "\n";
+        $emailContent .= "Email: " . $validated['email'] . "\n\n";
+        $emailContent .= "Mensaje:\n" . $validated['message'];
+        
+        Mail::raw($emailContent, function ($message) use ($validated) {
             $message->to('jorgeherrero.dev@gmail.com')
-                    ->subject('Contacto desde Syntal: ' . $validated['subject'])
-                    ->replyTo($validated['email'], $validated['name']);
+                ->subject('Contacto desde Syntal: ' . $validated['subject'])
+                ->replyTo($validated['email'], $validated['name']);
         });
         
         return redirect('/')->with('success', 'Mensaje enviado correctamente');

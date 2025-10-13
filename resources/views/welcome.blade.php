@@ -744,6 +744,55 @@
                         <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                     </svg>
                 </a>
+                <!-- MODAL DE CONTACTO ENTERPRISE -->
+<div id="enterprise-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-gray-900">
+    <div class="bg-[#111111] border border-gray-800 rounded-2xl shadow-2xl w-full max-w-lg mx-4 p-8 animate__animated animate__fadeInDown relative text-white">
+        
+        <!-- Botón cerrar -->
+        <button id="close-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+
+        <h3 class="text-2xl font-bold mb-3 bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent">
+            Contacto Enterprise
+        </h3>
+        <p class="text-gray-400 mb-6 text-sm">
+            Cuéntanos brevemente tus necesidades y te responderemos en menos de 24 h.
+        </p>
+
+        <!-- Formulario -->
+        <form id="enterpriseForm" method="POST" action="{{ route('contact.send') }}" class="space-y-4">
+            @csrf
+            <input type="hidden" name="subject" value="Plan Enterprise">
+            
+            <div>
+                <label class="block text-gray-300 text-sm mb-1">Nombre</label>
+                <input type="text" name="name" required
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none transition">
+            </div>
+            <div>
+                <label class="block text-gray-300 text-sm mb-1">Email</label>
+                <input type="email" name="email" required
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none transition">
+            </div>
+            <div>
+                <label class="block text-gray-300 text-sm mb-1">Mensaje</label>
+                <textarea name="message" rows="4" required
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:ring-2 focus:ring-orange-500 focus:outline-none transition"
+                    placeholder="Cuéntanos qué necesitas..."></textarea>
+            </div>
+
+            <div class="flex justify-end mt-6">
+                <button type="submit"
+                    class="bg-gradient-to-r from-orange-500 to-red-500 hover:opacity-90 text-white font-semibold px-6 py-2 rounded-lg transition">
+                    Enviar mensaje
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
             </div>
         </div>
     </div>
@@ -1260,6 +1309,34 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 300);
         });
     });
+
+
+    const openBtn = document.querySelector('a[href="#contact"]');
+    const modal = document.getElementById('enterprise-modal');
+    const closeBtn = document.getElementById('close-modal');
+
+    if (openBtn && modal && closeBtn) {
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden'; // bloquea scroll del fondo
+        });
+
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+            document.body.style.overflow = ''; // restaura scroll
+        });
+
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
+        });
+    }
 });
 </script>
 
